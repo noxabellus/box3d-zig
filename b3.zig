@@ -4,13 +4,13 @@ pub const getVersion = @extern(*const fn () callconv(.c) Version, .{ .name = "b3
 pub const isDoublePrecision = @extern(*const fn () callconv(.c) bool, .{ .name = "b3IsDoublePrecision" });
 pub const getTicks = @extern(*const fn () callconv(.c) u64, .{ .name = "b3GetTicks" });
 pub const getMilliseconds = @extern(*const fn (ticks: u64) callconv(.c) f32, .{ .name = "b3GetMilliseconds" });
-pub const getMillisecondsAndReset = @extern(*const fn (ticks: [*c]u64) callconv(.c) f32, .{ .name = "b3GetMillisecondsAndReset" });
+pub const getMillisecondsAndReset = @extern(*const fn (ticks: *u64) callconv(.c) f32, .{ .name = "b3GetMillisecondsAndReset" });
 pub const yield = @extern(*const fn () callconv(.c) void, .{ .name = "b3Yield" });
 pub const sleep = @extern(*const fn (milliseconds: c_int) callconv(.c) void, .{ .name = "b3Sleep" });
-pub const hash = @extern(*const fn (hash: u32, data: [*c]const u8, count: c_int) callconv(.c) u32, .{ .name = "b3Hash" });
+pub const hash = @extern(*const fn (hash: u32, data: [*]const u8, count: c_int) callconv(.c) u32, .{ .name = "b3Hash" });
 pub const atan2 = @extern(*const fn (y: f32, x: f32) callconv(.c) f32, .{ .name = "b3atan2" });
 pub const computeCosSin = @extern(*const fn (radians: f32) callconv(.c) CosSin, .{ .name = "b3ComputeCosSin" });
-pub const makeQuatFromMatrix = @extern(*const fn (m: [*c]const Matrix3) callconv(.c) Quat, .{ .name = "b3MakeQuatFromMatrix" });
+pub const makeQuatFromMatrix = @extern(*const fn (m: *const Matrix3) callconv(.c) Quat, .{ .name = "b3MakeQuatFromMatrix" });
 pub const computeQuatBetweenUnitVectors = @extern(*const fn (v1: Vec3, v2: Vec3) callconv(.c) Quat, .{ .name = "b3ComputeQuatBetweenUnitVectors" });
 pub const steiner = @extern(*const fn (mass: f32, origin: Vec3) callconv(.c) Matrix3, .{ .name = "b3Steiner" });
 pub const pointToSegmentDistance = @extern(*const fn (a: Vec3, b: Vec3, q: Vec3) callconv(.c) Vec3, .{ .name = "b3PointToSegmentDistance" });
@@ -50,131 +50,131 @@ pub const defaultQueryFilter = @extern(*const fn () callconv(.c) QueryFilter, .{
 pub const getGraphColor = @extern(*const fn (index: c_int) callconv(.c) HexColor, .{ .name = "b3GetGraphColor" });
 pub const defaultDebugDraw = @extern(*const fn () callconv(.c) DebugDraw, .{ .name = "b3DefaultDebugDraw" });
 pub const DynamicTree_create = @extern(*const fn (proxyCapacity: c_int) callconv(.c) DynamicTree, .{ .name = "b3DynamicTree_Create" });
-pub const DynamicTree_destroy = @extern(*const fn (tree: [*c]DynamicTree) callconv(.c) void, .{ .name = "b3DynamicTree_Destroy" });
-pub const DynamicTree_createProxy = @extern(*const fn (tree: [*c]DynamicTree, aabb: AABB, categoryBits: u64, userData: u64) callconv(.c) c_int, .{ .name = "b3DynamicTree_CreateProxy" });
-pub const DynamicTree_destroyProxy = @extern(*const fn (tree: [*c]DynamicTree, proxyId: c_int) callconv(.c) void, .{ .name = "b3DynamicTree_DestroyProxy" });
-pub const DynamicTree_moveProxy = @extern(*const fn (tree: [*c]DynamicTree, proxyId: c_int, aabb: AABB) callconv(.c) void, .{ .name = "b3DynamicTree_MoveProxy" });
-pub const DynamicTree_enlargeProxy = @extern(*const fn (tree: [*c]DynamicTree, proxyId: c_int, aabb: AABB) callconv(.c) void, .{ .name = "b3DynamicTree_EnlargeProxy" });
-pub const DynamicTree_setCategoryBits = @extern(*const fn (tree: [*c]DynamicTree, proxyId: c_int, categoryBits: u64) callconv(.c) void, .{ .name = "b3DynamicTree_SetCategoryBits" });
-pub const DynamicTree_getCategoryBits = @extern(*const fn (tree: [*c]DynamicTree, proxyId: c_int) callconv(.c) u64, .{ .name = "b3DynamicTree_GetCategoryBits" });
-pub const DynamicTree_query = @extern(*const fn (tree: [*c]const DynamicTree, aabb: AABB, maskBits: u64, requireAllBits: bool, callback: ?*const TreeQueryCallbackFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_Query" });
-pub const DynamicTree_queryClosest = @extern(*const fn (tree: [*c]const DynamicTree, point: Vec3, maskBits: u64, requireAllBits: bool, callback: ?*const TreeQueryClosestCallbackFcn, context: ?*anyopaque, minDistanceSqr: [*c]f32) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_QueryClosest" });
-pub const DynamicTree_rayCast = @extern(*const fn (tree: [*c]const DynamicTree, input: [*c]const RayCastInput, maskBits: u64, requireAllBits: bool, callback: ?*const TreeRayCastCallbackFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_RayCast" });
-pub const DynamicTree_boxCast = @extern(*const fn (tree: [*c]const DynamicTree, input: [*c]const BoxCastInput, maskBits: u64, requireAllBits: bool, callback: ?*const TreeBoxCastCallbackFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_BoxCast" });
-pub const DynamicTree_getHeight = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) c_int, .{ .name = "b3DynamicTree_GetHeight" });
-pub const DynamicTree_getAreaRatio = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) f32, .{ .name = "b3DynamicTree_GetAreaRatio" });
-pub const DynamicTree_getRootBounds = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) AABB, .{ .name = "b3DynamicTree_GetRootBounds" });
-pub const DynamicTree_getProxyCount = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) c_int, .{ .name = "b3DynamicTree_GetProxyCount" });
-pub const DynamicTree_rebuild = @extern(*const fn (tree: [*c]DynamicTree, fullBuild: bool) callconv(.c) c_int, .{ .name = "b3DynamicTree_Rebuild" });
-pub const DynamicTree_getByteCount = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) c_int, .{ .name = "b3DynamicTree_GetByteCount" });
-pub const DynamicTree_validate = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) void, .{ .name = "b3DynamicTree_Validate" });
-pub const DynamicTree_validateNoEnlarged = @extern(*const fn (tree: [*c]const DynamicTree) callconv(.c) void, .{ .name = "b3DynamicTree_ValidateNoEnlarged" });
-pub const DynamicTree_save = @extern(*const fn (tree: [*c]const DynamicTree, fileName: [*c]const u8) callconv(.c) void, .{ .name = "b3DynamicTree_Save" });
-pub const DynamicTree_load = @extern(*const fn (fileName: [*c]const u8, scale: f32) callconv(.c) DynamicTree, .{ .name = "b3DynamicTree_Load" });
-pub const createCylinder = @extern(*const fn (height: f32, radius: f32, yOffset: f32, sides: c_int) callconv(.c) [*c]HullData, .{ .name = "b3CreateCylinder" });
-pub const createCone = @extern(*const fn (height: f32, radius1: f32, radius2: f32, slices: c_int) callconv(.c) [*c]HullData, .{ .name = "b3CreateCone" });
-pub const createRock = @extern(*const fn (radius: f32) callconv(.c) [*c]HullData, .{ .name = "b3CreateRock" });
-pub const createHull = @extern(*const fn (points: [*c]const Vec3, pointCount: c_int, maxVertexCount: c_int) callconv(.c) [*c]HullData, .{ .name = "b3CreateHull" });
-pub const cloneHull = @extern(*const fn (hull: [*c]const HullData) callconv(.c) [*c]HullData, .{ .name = "b3CloneHull" });
-pub const cloneAndTransformHull = @extern(*const fn (original: [*c]const HullData, transform: Transform, scale: Vec3) callconv(.c) [*c]HullData, .{ .name = "b3CloneAndTransformHull" });
-pub const destroyHull = @extern(*const fn (hull: [*c]HullData) callconv(.c) void, .{ .name = "b3DestroyHull" });
+pub const DynamicTree_destroy = @extern(*const fn (tree: *DynamicTree) callconv(.c) void, .{ .name = "b3DynamicTree_Destroy" });
+pub const DynamicTree_createProxy = @extern(*const fn (tree: *DynamicTree, aabb: AABB, categoryBits: u64, userData: u64) callconv(.c) c_int, .{ .name = "b3DynamicTree_CreateProxy" });
+pub const DynamicTree_destroyProxy = @extern(*const fn (tree: *DynamicTree, proxyId: c_int) callconv(.c) void, .{ .name = "b3DynamicTree_DestroyProxy" });
+pub const DynamicTree_moveProxy = @extern(*const fn (tree: *DynamicTree, proxyId: c_int, aabb: AABB) callconv(.c) void, .{ .name = "b3DynamicTree_MoveProxy" });
+pub const DynamicTree_enlargeProxy = @extern(*const fn (tree: *DynamicTree, proxyId: c_int, aabb: AABB) callconv(.c) void, .{ .name = "b3DynamicTree_EnlargeProxy" });
+pub const DynamicTree_setCategoryBits = @extern(*const fn (tree: *DynamicTree, proxyId: c_int, categoryBits: u64) callconv(.c) void, .{ .name = "b3DynamicTree_SetCategoryBits" });
+pub const DynamicTree_getCategoryBits = @extern(*const fn (tree: *DynamicTree, proxyId: c_int) callconv(.c) u64, .{ .name = "b3DynamicTree_GetCategoryBits" });
+pub const DynamicTree_query = @extern(*const fn (tree: *const DynamicTree, aabb: AABB, maskBits: u64, requireAllBits: bool, callback: ?*const TreeQueryCallbackFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_Query" });
+pub const DynamicTree_queryClosest = @extern(*const fn (tree: *const DynamicTree, point: Vec3, maskBits: u64, requireAllBits: bool, callback: ?*const TreeQueryClosestCallbackFcn, context: ?*anyopaque, minDistanceSqr: *f32) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_QueryClosest" });
+pub const DynamicTree_rayCast = @extern(*const fn (tree: *const DynamicTree, input: *const RayCastInput, maskBits: u64, requireAllBits: bool, callback: ?*const TreeRayCastCallbackFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_RayCast" });
+pub const DynamicTree_boxCast = @extern(*const fn (tree: *const DynamicTree, input: *const BoxCastInput, maskBits: u64, requireAllBits: bool, callback: ?*const TreeBoxCastCallbackFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3DynamicTree_BoxCast" });
+pub const DynamicTree_getHeight = @extern(*const fn (tree: *const DynamicTree) callconv(.c) c_int, .{ .name = "b3DynamicTree_GetHeight" });
+pub const DynamicTree_getAreaRatio = @extern(*const fn (tree: *const DynamicTree) callconv(.c) f32, .{ .name = "b3DynamicTree_GetAreaRatio" });
+pub const DynamicTree_getRootBounds = @extern(*const fn (tree: *const DynamicTree) callconv(.c) AABB, .{ .name = "b3DynamicTree_GetRootBounds" });
+pub const DynamicTree_getProxyCount = @extern(*const fn (tree: *const DynamicTree) callconv(.c) c_int, .{ .name = "b3DynamicTree_GetProxyCount" });
+pub const DynamicTree_rebuild = @extern(*const fn (tree: *DynamicTree, fullBuild: bool) callconv(.c) c_int, .{ .name = "b3DynamicTree_Rebuild" });
+pub const DynamicTree_getByteCount = @extern(*const fn (tree: *const DynamicTree) callconv(.c) c_int, .{ .name = "b3DynamicTree_GetByteCount" });
+pub const DynamicTree_validate = @extern(*const fn (tree: *const DynamicTree) callconv(.c) void, .{ .name = "b3DynamicTree_Validate" });
+pub const DynamicTree_validateNoEnlarged = @extern(*const fn (tree: *const DynamicTree) callconv(.c) void, .{ .name = "b3DynamicTree_ValidateNoEnlarged" });
+pub const DynamicTree_save = @extern(*const fn (tree: *const DynamicTree, fileName: [*:0]const u8) callconv(.c) void, .{ .name = "b3DynamicTree_Save" });
+pub const DynamicTree_load = @extern(*const fn (fileName: [*:0]const u8, scale: f32) callconv(.c) DynamicTree, .{ .name = "b3DynamicTree_Load" });
+pub const createCylinder = @extern(*const fn (height: f32, radius: f32, yOffset: f32, sides: c_int) callconv(.c) ?*HullData, .{ .name = "b3CreateCylinder" });
+pub const createCone = @extern(*const fn (height: f32, radius1: f32, radius2: f32, slices: c_int) callconv(.c) ?*HullData, .{ .name = "b3CreateCone" });
+pub const createRock = @extern(*const fn (radius: f32) callconv(.c) ?*HullData, .{ .name = "b3CreateRock" });
+pub const createHull = @extern(*const fn (points: *const Vec3, pointCount: c_int, maxVertexCount: c_int) callconv(.c) ?*HullData, .{ .name = "b3CreateHull" });
+pub const cloneHull = @extern(*const fn (hull: *const HullData) callconv(.c) ?*HullData, .{ .name = "b3CloneHull" });
+pub const cloneAndTransformHull = @extern(*const fn (original: *const HullData, transform: Transform, scale: Vec3) callconv(.c) ?*HullData, .{ .name = "b3CloneAndTransformHull" });
+pub const destroyHull = @extern(*const fn (hull: *HullData) callconv(.c) void, .{ .name = "b3DestroyHull" });
 pub const makeCubeHull = @extern(*const fn (halfWidth: f32) callconv(.c) BoxHull, .{ .name = "b3MakeCubeHull" });
 pub const makeBoxHull = @extern(*const fn (hx: f32, hy: f32, hz: f32) callconv(.c) BoxHull, .{ .name = "b3MakeBoxHull" });
 pub const makeOffsetBoxHull = @extern(*const fn (hx: f32, hy: f32, hz: f32, offset: Vec3) callconv(.c) BoxHull, .{ .name = "b3MakeOffsetBoxHull" });
 pub const makeTransformedBoxHull = @extern(*const fn (hx: f32, hy: f32, hz: f32, transform: Transform) callconv(.c) BoxHull, .{ .name = "b3MakeTransformedBoxHull" });
 pub const makeScaledBoxHull = @extern(*const fn (halfWidths: Vec3, transform: Transform, postScale: Vec3) callconv(.c) BoxHull, .{ .name = "b3MakeScaledBoxHull" });
-pub const scaleBox = @extern(*const fn (halfWidths: [*c]Vec3, transform: [*c]Transform, postScale: Vec3, minHalfWidth: f32) callconv(.c) void, .{ .name = "b3ScaleBox" });
-pub const createGridMesh = @extern(*const fn (xCount: c_int, zCount: c_int, cellWidth: f32, materialCount: c_int, identifyEdges: bool) callconv(.c) [*c]MeshData, .{ .name = "b3CreateGridMesh" });
-pub const createWaveMesh = @extern(*const fn (xCount: c_int, zCount: c_int, cellWidth: f32, amplitude: f32, rowFrequency: f32, columnFrequency: f32) callconv(.c) [*c]MeshData, .{ .name = "b3CreateWaveMesh" });
-pub const createTorusMesh = @extern(*const fn (radialResolution: c_int, tubularResolution: c_int, radius: f32, thickness: f32) callconv(.c) [*c]MeshData, .{ .name = "b3CreateTorusMesh" });
-pub const createBoxMesh = @extern(*const fn (center: Vec3, extent: Vec3, identifyEdges: bool) callconv(.c) [*c]MeshData, .{ .name = "b3CreateBoxMesh" });
-pub const createHollowBoxMesh = @extern(*const fn (center: Vec3, extent: Vec3) callconv(.c) [*c]MeshData, .{ .name = "b3CreateHollowBoxMesh" });
-pub const createPlatformMesh = @extern(*const fn (center: Vec3, height: f32, topWidth: f32, bottomWidth: f32) callconv(.c) [*c]MeshData, .{ .name = "b3CreatePlatformMesh" });
-pub const createMesh = @extern(*const fn (def: [*c]const MeshDef, degenerateTriangleIndices: [*c]c_int, degenerateCapacity: c_int) callconv(.c) [*c]MeshData, .{ .name = "b3CreateMesh" });
-pub const destroyMesh = @extern(*const fn (mesh: [*c]MeshData) callconv(.c) void, .{ .name = "b3DestroyMesh" });
-pub const getHeight = @extern(*const fn (mesh: [*c]const MeshData) callconv(.c) c_int, .{ .name = "b3GetHeight" });
-pub const createHeightField = @extern(*const fn (data: [*c]const HeightFieldDef) callconv(.c) [*c]HeightFieldData, .{ .name = "b3CreateHeightField" });
-pub const createGrid = @extern(*const fn (rowCount: c_int, columnCount: c_int, scale: Vec3, makeHoles: bool) callconv(.c) [*c]HeightFieldData, .{ .name = "b3CreateGrid" });
-pub const createWave = @extern(*const fn (rowCount: c_int, columnCount: c_int, scale: Vec3, rowFrequency: f32, columnFrequency: f32, makeHoles: bool) callconv(.c) [*c]HeightFieldData, .{ .name = "b3CreateWave" });
-pub const destroyHeightField = @extern(*const fn (heightField: [*c]HeightFieldData) callconv(.c) void, .{ .name = "b3DestroyHeightField" });
-pub const dumpHeightData = @extern(*const fn (data: [*c]const HeightFieldDef, fileName: [*c]const u8) callconv(.c) void, .{ .name = "b3DumpHeightData" });
-pub const loadHeightField = @extern(*const fn (fileName: [*c]const u8) callconv(.c) [*c]HeightFieldData, .{ .name = "b3LoadHeightField" });
-pub const getCompoundChild = @extern(*const fn (compound: [*c]const CompoundData, childIndex: c_int) callconv(.c) ChildShape, .{ .name = "b3GetCompoundChild" });
-pub const queryCompound = @extern(*const fn (compound: [*c]const CompoundData, aabb: AABB, fcn: ?*const CompoundQueryFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3QueryCompound" });
-pub const getCompoundCapsule = @extern(*const fn (compound: [*c]const CompoundData, index: c_int) callconv(.c) CompoundCapsule, .{ .name = "b3GetCompoundCapsule" });
-pub const getCompoundHull = @extern(*const fn (compound: [*c]const CompoundData, index: c_int) callconv(.c) CompoundHull, .{ .name = "b3GetCompoundHull" });
-pub const getCompoundMesh = @extern(*const fn (compound: [*c]const CompoundData, index: c_int) callconv(.c) CompoundMesh, .{ .name = "b3GetCompoundMesh" });
-pub const getCompoundSphere = @extern(*const fn (compound: [*c]const CompoundData, index: c_int) callconv(.c) CompoundSphere, .{ .name = "b3GetCompoundSphere" });
-pub const getCompoundMaterials = @extern(*const fn (compound: [*c]const CompoundData) callconv(.c) [*c]const SurfaceMaterial, .{ .name = "b3GetCompoundMaterials" });
-pub const createCompound = @extern(*const fn (def: [*c]const CompoundDef) callconv(.c) [*c]CompoundData, .{ .name = "b3CreateCompound" });
-pub const destroyCompound = @extern(*const fn (compound: [*c]CompoundData) callconv(.c) void, .{ .name = "b3DestroyCompound" });
-pub const convertCompoundToBytes = @extern(*const fn (compound: [*c]CompoundData) callconv(.c) [*c]u8, .{ .name = "b3ConvertCompoundToBytes" });
-pub const convertBytesToCompound = @extern(*const fn (bytes: [*c]u8, byteCount: c_int) callconv(.c) [*c]CompoundData, .{ .name = "b3ConvertBytesToCompound" });
-pub const computeSphereMass = @extern(*const fn (shape: [*c]const Sphere, density: f32) callconv(.c) MassData, .{ .name = "b3ComputeSphereMass" });
-pub const computeCapsuleMass = @extern(*const fn (shape: [*c]const Capsule, density: f32) callconv(.c) MassData, .{ .name = "b3ComputeCapsuleMass" });
-pub const computeHullMass = @extern(*const fn (shape: [*c]const HullData, density: f32) callconv(.c) MassData, .{ .name = "b3ComputeHullMass" });
-pub const computeSphereAABB = @extern(*const fn (shape: [*c]const Sphere, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeSphereAABB" });
-pub const computeCapsuleAABB = @extern(*const fn (shape: [*c]const Capsule, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeCapsuleAABB" });
-pub const computeHullAABB = @extern(*const fn (shape: [*c]const HullData, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeHullAABB" });
-pub const computeMeshAABB = @extern(*const fn (shape: [*c]const MeshData, transform: Transform, scale: Vec3) callconv(.c) AABB, .{ .name = "b3ComputeMeshAABB" });
-pub const computeHeightFieldAABB = @extern(*const fn (shape: [*c]const HeightFieldData, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeHeightFieldAABB" });
-pub const computeCompoundAABB = @extern(*const fn (shape: [*c]const CompoundData, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeCompoundAABB" });
-pub const isValidRay = @extern(*const fn (input: [*c]const RayCastInput) callconv(.c) bool, .{ .name = "b3IsValidRay" });
-pub const overlapCapsule = @extern(*const fn (shape: [*c]const Capsule, shapeTransform: Transform, proxy: [*c]const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapCapsule" });
-pub const overlapCompound = @extern(*const fn (shape: [*c]const CompoundData, shapeTransform: Transform, proxy: [*c]const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapCompound" });
-pub const overlapHeightField = @extern(*const fn (shape: [*c]const HeightFieldData, shapeTransform: Transform, proxy: [*c]const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapHeightField" });
-pub const overlapHull = @extern(*const fn (shape: [*c]const HullData, shapeTransform: Transform, proxy: [*c]const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapHull" });
-pub const overlapMesh = @extern(*const fn (shape: [*c]const Mesh, shapeTransform: Transform, proxy: [*c]const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapMesh" });
-pub const overlapSphere = @extern(*const fn (shape: [*c]const Sphere, shapeTransform: Transform, proxy: [*c]const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapSphere" });
-pub const rayCastSphere = @extern(*const fn (shape: [*c]const Sphere, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastSphere" });
-pub const rayCastHollowSphere = @extern(*const fn (shape: [*c]const Sphere, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastHollowSphere" });
-pub const rayCastCapsule = @extern(*const fn (shape: [*c]const Capsule, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastCapsule" });
-pub const rayCastCompound = @extern(*const fn (shape: [*c]const CompoundData, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastCompound" });
-pub const rayCastHull = @extern(*const fn (shape: [*c]const HullData, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastHull" });
-pub const rayCastMesh = @extern(*const fn (shape: [*c]const Mesh, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastMesh" });
-pub const rayCastHeightField = @extern(*const fn (shape: [*c]const HeightFieldData, input: [*c]const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastHeightField" });
-pub const shapeCastSphere = @extern(*const fn (shape: [*c]const Sphere, input: [*c]const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastSphere" });
-pub const shapeCastCapsule = @extern(*const fn (shape: [*c]const Capsule, input: [*c]const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastCapsule" });
-pub const shapeCastCompound = @extern(*const fn (shape: [*c]const CompoundData, input: [*c]const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastCompound" });
-pub const shapeCastHull = @extern(*const fn (shape: [*c]const HullData, input: [*c]const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastHull" });
-pub const shapeCastMesh = @extern(*const fn (shape: [*c]const Mesh, input: [*c]const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastMesh" });
-pub const shapeCastHeightField = @extern(*const fn (shape: [*c]const HeightFieldData, input: [*c]const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastHeightField" });
-pub const queryMesh = @extern(*const fn (mesh: [*c]const Mesh, bounds: AABB, fcn: ?*const MeshQueryFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3QueryMesh" });
-pub const queryHeightField = @extern(*const fn (heightField: [*c]const HeightFieldData, bounds: AABB, fcn: ?*const MeshQueryFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3QueryHeightField" });
-pub const shapeDistance = @extern(*const fn (input: [*c]const DistanceInput, cache: [*c]SimplexCache, simplexes: [*c]Simplex, simplexCapacity: c_int) callconv(.c) DistanceOutput, .{ .name = "b3ShapeDistance" });
-pub const shapeCast = @extern(*const fn (input: [*c]const ShapeCastPairInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCast" });
-pub const getSweepTransform = @extern(*const fn (sweep: [*c]const Sweep, time: f32) callconv(.c) Transform, .{ .name = "b3GetSweepTransform" });
-pub const timeOfImpact = @extern(*const fn (input: [*c]const TOIInput) callconv(.c) TOIOutput, .{ .name = "b3TimeOfImpact" });
-pub const collideSpheres = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, sphereA: [*c]const Sphere, sphereB: [*c]const Sphere, transformBtoA: Transform) callconv(.c) void, .{ .name = "b3CollideSpheres" });
-pub const collideCapsuleAndSphere = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, capsuleA: [*c]const Capsule, sphereB: [*c]const Sphere, transformBtoA: Transform) callconv(.c) void, .{ .name = "b3CollideCapsuleAndSphere" });
-pub const collideHullAndSphere = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, hullA: [*c]const HullData, sphereB: [*c]const Sphere, transformBtoA: Transform, cache: [*c]SimplexCache) callconv(.c) void, .{ .name = "b3CollideHullAndSphere" });
-pub const collideCapsules = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, capsuleA: [*c]const Capsule, capsuleB: [*c]const Capsule, transformBtoA: Transform) callconv(.c) void, .{ .name = "b3CollideCapsules" });
-pub const collideHullAndCapsule = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, hullA: [*c]const HullData, capsuleB: [*c]const Capsule, transformBtoA: Transform, cache: [*c]SimplexCache) callconv(.c) void, .{ .name = "b3CollideHullAndCapsule" });
-pub const collideHulls = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, hullA: [*c]const HullData, hullB: [*c]const HullData, transformBtoA: Transform, cache: [*c]SATCache) callconv(.c) void, .{ .name = "b3CollideHulls" });
-pub const collideCapsuleAndTriangle = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, capsuleA: [*c]const Capsule, triangleB: [*c]const Vec3, cache: [*c]SimplexCache) callconv(.c) void, .{ .name = "b3CollideCapsuleAndTriangle" });
-pub const collideHullAndTriangle = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, hullA: [*c]const HullData, v1: Vec3, v2: Vec3, v3: Vec3, triangleFlags: c_int, cache: [*c]SATCache) callconv(.c) void, .{ .name = "b3CollideHullAndTriangle" });
-pub const collideSphereAndTriangle = @extern(*const fn (manifold: [*c]LocalManifold, capacity: c_int, sphereA: [*c]const Sphere, triangleB: [*c]const Vec3) callconv(.c) void, .{ .name = "b3CollideSphereAndTriangle" });
-pub const solvePlanes = @extern(*const fn (targetDelta: Vec3, planes: [*c]CollisionPlane, count: c_int) callconv(.c) PlaneSolverResult, .{ .name = "b3SolvePlanes" });
-pub const clipVector = @extern(*const fn (vector: Vec3, planes: [*c]const CollisionPlane, count: c_int) callconv(.c) Vec3, .{ .name = "b3ClipVector" });
-pub const createWorld = @extern(*const fn (def: [*c]const WorldDef) callconv(.c) WorldId, .{ .name = "b3CreateWorld" });
+pub const scaleBox = @extern(*const fn (halfWidths: *Vec3, transform: *Transform, postScale: Vec3, minHalfWidth: f32) callconv(.c) void, .{ .name = "b3ScaleBox" });
+pub const createGridMesh = @extern(*const fn (xCount: c_int, zCount: c_int, cellWidth: f32, materialCount: c_int, identifyEdges: bool) callconv(.c) ?*MeshData, .{ .name = "b3CreateGridMesh" });
+pub const createWaveMesh = @extern(*const fn (xCount: c_int, zCount: c_int, cellWidth: f32, amplitude: f32, rowFrequency: f32, columnFrequency: f32) callconv(.c) ?*MeshData, .{ .name = "b3CreateWaveMesh" });
+pub const createTorusMesh = @extern(*const fn (radialResolution: c_int, tubularResolution: c_int, radius: f32, thickness: f32) callconv(.c) ?*MeshData, .{ .name = "b3CreateTorusMesh" });
+pub const createBoxMesh = @extern(*const fn (center: Vec3, extent: Vec3, identifyEdges: bool) callconv(.c) ?*MeshData, .{ .name = "b3CreateBoxMesh" });
+pub const createHollowBoxMesh = @extern(*const fn (center: Vec3, extent: Vec3) callconv(.c) ?*MeshData, .{ .name = "b3CreateHollowBoxMesh" });
+pub const createPlatformMesh = @extern(*const fn (center: Vec3, height: f32, topWidth: f32, bottomWidth: f32) callconv(.c) ?*MeshData, .{ .name = "b3CreatePlatformMesh" });
+pub const createMesh = @extern(*const fn (def: *const MeshDef, degenerateTriangleIndices: *c_int, degenerateCapacity: c_int) callconv(.c) ?*MeshData, .{ .name = "b3CreateMesh" });
+pub const destroyMesh = @extern(*const fn (mesh: *MeshData) callconv(.c) void, .{ .name = "b3DestroyMesh" });
+pub const getHeight = @extern(*const fn (mesh: *const MeshData) callconv(.c) c_int, .{ .name = "b3GetHeight" });
+pub const createHeightField = @extern(*const fn (data: *const HeightFieldDef) callconv(.c) ?*HeightFieldData, .{ .name = "b3CreateHeightField" });
+pub const createGrid = @extern(*const fn (rowCount: c_int, columnCount: c_int, scale: Vec3, makeHoles: bool) callconv(.c) ?*HeightFieldData, .{ .name = "b3CreateGrid" });
+pub const createWave = @extern(*const fn (rowCount: c_int, columnCount: c_int, scale: Vec3, rowFrequency: f32, columnFrequency: f32, makeHoles: bool) callconv(.c) ?*HeightFieldData, .{ .name = "b3CreateWave" });
+pub const destroyHeightField = @extern(*const fn (heightField: *HeightFieldData) callconv(.c) void, .{ .name = "b3DestroyHeightField" });
+pub const dumpHeightData = @extern(*const fn (data: *const HeightFieldDef, fileName: [*:0]const u8) callconv(.c) void, .{ .name = "b3DumpHeightData" });
+pub const loadHeightField = @extern(*const fn (fileName: [*:0]const u8) callconv(.c) ?*HeightFieldData, .{ .name = "b3LoadHeightField" });
+pub const getCompoundChild = @extern(*const fn (compound: *const CompoundData, childIndex: c_int) callconv(.c) ChildShape, .{ .name = "b3GetCompoundChild" });
+pub const queryCompound = @extern(*const fn (compound: *const CompoundData, aabb: AABB, fcn: ?*const CompoundQueryFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3QueryCompound" });
+pub const getCompoundCapsule = @extern(*const fn (compound: *const CompoundData, index: c_int) callconv(.c) CompoundCapsule, .{ .name = "b3GetCompoundCapsule" });
+pub const getCompoundHull = @extern(*const fn (compound: *const CompoundData, index: c_int) callconv(.c) CompoundHull, .{ .name = "b3GetCompoundHull" });
+pub const getCompoundMesh = @extern(*const fn (compound: *const CompoundData, index: c_int) callconv(.c) CompoundMesh, .{ .name = "b3GetCompoundMesh" });
+pub const getCompoundSphere = @extern(*const fn (compound: *const CompoundData, index: c_int) callconv(.c) CompoundSphere, .{ .name = "b3GetCompoundSphere" });
+pub const getCompoundMaterials = @extern(*const fn (compound: *const CompoundData) callconv(.c) ?*const SurfaceMaterial, .{ .name = "b3GetCompoundMaterials" });
+pub const createCompound = @extern(*const fn (def: *const CompoundDef) callconv(.c) ?*CompoundData, .{ .name = "b3CreateCompound" });
+pub const destroyCompound = @extern(*const fn (compound: *CompoundData) callconv(.c) void, .{ .name = "b3DestroyCompound" });
+pub const convertCompoundToBytes = @extern(*const fn (compound: *CompoundData) callconv(.c) ?*u8, .{ .name = "b3ConvertCompoundToBytes" });
+pub const convertBytesToCompound = @extern(*const fn (bytes: *u8, byteCount: c_int) callconv(.c) ?*CompoundData, .{ .name = "b3ConvertBytesToCompound" });
+pub const computeSphereMass = @extern(*const fn (shape: *const Sphere, density: f32) callconv(.c) MassData, .{ .name = "b3ComputeSphereMass" });
+pub const computeCapsuleMass = @extern(*const fn (shape: *const Capsule, density: f32) callconv(.c) MassData, .{ .name = "b3ComputeCapsuleMass" });
+pub const computeHullMass = @extern(*const fn (shape: *const HullData, density: f32) callconv(.c) MassData, .{ .name = "b3ComputeHullMass" });
+pub const computeSphereAABB = @extern(*const fn (shape: *const Sphere, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeSphereAABB" });
+pub const computeCapsuleAABB = @extern(*const fn (shape: *const Capsule, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeCapsuleAABB" });
+pub const computeHullAABB = @extern(*const fn (shape: *const HullData, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeHullAABB" });
+pub const computeMeshAABB = @extern(*const fn (shape: *const MeshData, transform: Transform, scale: Vec3) callconv(.c) AABB, .{ .name = "b3ComputeMeshAABB" });
+pub const computeHeightFieldAABB = @extern(*const fn (shape: *const HeightFieldData, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeHeightFieldAABB" });
+pub const computeCompoundAABB = @extern(*const fn (shape: *const CompoundData, transform: Transform) callconv(.c) AABB, .{ .name = "b3ComputeCompoundAABB" });
+pub const isValidRay = @extern(*const fn (input: *const RayCastInput) callconv(.c) bool, .{ .name = "b3IsValidRay" });
+pub const overlapCapsule = @extern(*const fn (shape: *const Capsule, shapeTransform: Transform, proxy: *const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapCapsule" });
+pub const overlapCompound = @extern(*const fn (shape: *const CompoundData, shapeTransform: Transform, proxy: *const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapCompound" });
+pub const overlapHeightField = @extern(*const fn (shape: *const HeightFieldData, shapeTransform: Transform, proxy: *const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapHeightField" });
+pub const overlapHull = @extern(*const fn (shape: *const HullData, shapeTransform: Transform, proxy: *const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapHull" });
+pub const overlapMesh = @extern(*const fn (shape: *const Mesh, shapeTransform: Transform, proxy: *const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapMesh" });
+pub const overlapSphere = @extern(*const fn (shape: *const Sphere, shapeTransform: Transform, proxy: *const ShapeProxy) callconv(.c) bool, .{ .name = "b3OverlapSphere" });
+pub const rayCastSphere = @extern(*const fn (shape: *const Sphere, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastSphere" });
+pub const rayCastHollowSphere = @extern(*const fn (shape: *const Sphere, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastHollowSphere" });
+pub const rayCastCapsule = @extern(*const fn (shape: *const Capsule, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastCapsule" });
+pub const rayCastCompound = @extern(*const fn (shape: *const CompoundData, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastCompound" });
+pub const rayCastHull = @extern(*const fn (shape: *const HullData, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastHull" });
+pub const rayCastMesh = @extern(*const fn (shape: *const Mesh, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastMesh" });
+pub const rayCastHeightField = @extern(*const fn (shape: *const HeightFieldData, input: *const RayCastInput) callconv(.c) CastOutput, .{ .name = "b3RayCastHeightField" });
+pub const shapeCastSphere = @extern(*const fn (shape: *const Sphere, input: *const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastSphere" });
+pub const shapeCastCapsule = @extern(*const fn (shape: *const Capsule, input: *const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastCapsule" });
+pub const shapeCastCompound = @extern(*const fn (shape: *const CompoundData, input: *const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastCompound" });
+pub const shapeCastHull = @extern(*const fn (shape: *const HullData, input: *const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastHull" });
+pub const shapeCastMesh = @extern(*const fn (shape: *const Mesh, input: *const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastMesh" });
+pub const shapeCastHeightField = @extern(*const fn (shape: *const HeightFieldData, input: *const ShapeCastInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCastHeightField" });
+pub const queryMesh = @extern(*const fn (mesh: *const Mesh, bounds: AABB, fcn: ?*const MeshQueryFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3QueryMesh" });
+pub const queryHeightField = @extern(*const fn (heightField: *const HeightFieldData, bounds: AABB, fcn: ?*const MeshQueryFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3QueryHeightField" });
+pub const shapeDistance = @extern(*const fn (input: *const DistanceInput, cache: *SimplexCache, simplexes: *Simplex, simplexCapacity: c_int) callconv(.c) DistanceOutput, .{ .name = "b3ShapeDistance" });
+pub const shapeCast = @extern(*const fn (input: *const ShapeCastPairInput) callconv(.c) CastOutput, .{ .name = "b3ShapeCast" });
+pub const getSweepTransform = @extern(*const fn (sweep: *const Sweep, time: f32) callconv(.c) Transform, .{ .name = "b3GetSweepTransform" });
+pub const timeOfImpact = @extern(*const fn (input: *const TOIInput) callconv(.c) TOIOutput, .{ .name = "b3TimeOfImpact" });
+pub const collideSpheres = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, sphereA: *const Sphere, sphereB: *const Sphere, transformBtoA: Transform) callconv(.c) void, .{ .name = "b3CollideSpheres" });
+pub const collideCapsuleAndSphere = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, capsuleA: *const Capsule, sphereB: *const Sphere, transformBtoA: Transform) callconv(.c) void, .{ .name = "b3CollideCapsuleAndSphere" });
+pub const collideHullAndSphere = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, hullA: *const HullData, sphereB: *const Sphere, transformBtoA: Transform, cache: *SimplexCache) callconv(.c) void, .{ .name = "b3CollideHullAndSphere" });
+pub const collideCapsules = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, capsuleA: *const Capsule, capsuleB: *const Capsule, transformBtoA: Transform) callconv(.c) void, .{ .name = "b3CollideCapsules" });
+pub const collideHullAndCapsule = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, hullA: *const HullData, capsuleB: *const Capsule, transformBtoA: Transform, cache: *SimplexCache) callconv(.c) void, .{ .name = "b3CollideHullAndCapsule" });
+pub const collideHulls = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, hullA: *const HullData, hullB: *const HullData, transformBtoA: Transform, cache: *SATCache) callconv(.c) void, .{ .name = "b3CollideHulls" });
+pub const collideCapsuleAndTriangle = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, capsuleA: *const Capsule, triangleB: *const Vec3, cache: *SimplexCache) callconv(.c) void, .{ .name = "b3CollideCapsuleAndTriangle" });
+pub const collideHullAndTriangle = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, hullA: *const HullData, v1: Vec3, v2: Vec3, v3: Vec3, triangleFlags: c_int, cache: *SATCache) callconv(.c) void, .{ .name = "b3CollideHullAndTriangle" });
+pub const collideSphereAndTriangle = @extern(*const fn (manifold: *LocalManifold, capacity: c_int, sphereA: *const Sphere, triangleB: *const Vec3) callconv(.c) void, .{ .name = "b3CollideSphereAndTriangle" });
+pub const solvePlanes = @extern(*const fn (targetDelta: Vec3, planes: *CollisionPlane, count: c_int) callconv(.c) PlaneSolverResult, .{ .name = "b3SolvePlanes" });
+pub const clipVector = @extern(*const fn (vector: Vec3, planes: *const CollisionPlane, count: c_int) callconv(.c) Vec3, .{ .name = "b3ClipVector" });
+pub const createWorld = @extern(*const fn (def: *const WorldDef) callconv(.c) WorldId, .{ .name = "b3CreateWorld" });
 pub const destroyWorld = @extern(*const fn (worldId: WorldId) callconv(.c) void, .{ .name = "b3DestroyWorld" });
 pub const getWorldCount = @extern(*const fn () callconv(.c) c_int, .{ .name = "b3GetWorldCount" });
 pub const getMaxWorldCount = @extern(*const fn () callconv(.c) c_int, .{ .name = "b3GetMaxWorldCount" });
 pub const World_isValid = @extern(*const fn (id: WorldId) callconv(.c) bool, .{ .name = "b3World_IsValid" });
 pub const World_step = @extern(*const fn (worldId: WorldId, timeStep: f32, subStepCount: c_int) callconv(.c) void, .{ .name = "b3World_Step" });
-pub const World_draw = @extern(*const fn (worldId: WorldId, draw: [*c]DebugDraw, maskBits: u64) callconv(.c) void, .{ .name = "b3World_Draw" });
+pub const World_draw = @extern(*const fn (worldId: WorldId, draw: *DebugDraw, maskBits: u64) callconv(.c) void, .{ .name = "b3World_Draw" });
 pub const World_getBounds = @extern(*const fn (worldId: WorldId) callconv(.c) AABB, .{ .name = "b3World_GetBounds" });
 pub const World_getBodyEvents = @extern(*const fn (worldId: WorldId) callconv(.c) BodyEvents, .{ .name = "b3World_GetBodyEvents" });
 pub const World_getSensorEvents = @extern(*const fn (worldId: WorldId) callconv(.c) SensorEvents, .{ .name = "b3World_GetSensorEvents" });
 pub const World_getContactEvents = @extern(*const fn (worldId: WorldId) callconv(.c) ContactEvents, .{ .name = "b3World_GetContactEvents" });
 pub const World_getJointEvents = @extern(*const fn (worldId: WorldId) callconv(.c) JointEvents, .{ .name = "b3World_GetJointEvents" });
 pub const World_overlapAABB = @extern(*const fn (worldId: WorldId, aabb: AABB, filter: QueryFilter, fcn: ?*const OverlapResultFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3World_OverlapAABB" });
-pub const World_overlapShape = @extern(*const fn (worldId: WorldId, origin: Pos, proxy: [*c]const ShapeProxy, filter: QueryFilter, fcn: ?*const OverlapResultFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3World_OverlapShape" });
+pub const World_overlapShape = @extern(*const fn (worldId: WorldId, origin: Pos, proxy: *const ShapeProxy, filter: QueryFilter, fcn: ?*const OverlapResultFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3World_OverlapShape" });
 pub const World_castRay = @extern(*const fn (worldId: WorldId, origin: Pos, translation: Vec3, filter: QueryFilter, fcn: ?*const CastResultFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3World_CastRay" });
 pub const World_castRayClosest = @extern(*const fn (worldId: WorldId, origin: Pos, translation: Vec3, filter: QueryFilter) callconv(.c) RayResult, .{ .name = "b3World_CastRayClosest" });
-pub const World_castShape = @extern(*const fn (worldId: WorldId, origin: Pos, proxy: [*c]const ShapeProxy, translation: Vec3, filter: QueryFilter, fcn: ?*const CastResultFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3World_CastShape" });
-pub const World_castMover = @extern(*const fn (worldId: WorldId, origin: Pos, mover: [*c]const Capsule, translation: Vec3, filter: QueryFilter, fcn: ?*const MoverFilterFcn, context: ?*anyopaque) callconv(.c) f32, .{ .name = "b3World_CastMover" });
-pub const World_collideMover = @extern(*const fn (worldId: WorldId, origin: Pos, mover: [*c]const Capsule, filter: QueryFilter, fcn: ?*const PlaneResultFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3World_CollideMover" });
+pub const World_castShape = @extern(*const fn (worldId: WorldId, origin: Pos, proxy: *const ShapeProxy, translation: Vec3, filter: QueryFilter, fcn: ?*const CastResultFcn, context: ?*anyopaque) callconv(.c) TreeStats, .{ .name = "b3World_CastShape" });
+pub const World_castMover = @extern(*const fn (worldId: WorldId, origin: Pos, mover: *const Capsule, translation: Vec3, filter: QueryFilter, fcn: ?*const MoverFilterFcn, context: ?*anyopaque) callconv(.c) f32, .{ .name = "b3World_CastMover" });
+pub const World_collideMover = @extern(*const fn (worldId: WorldId, origin: Pos, mover: *const Capsule, filter: QueryFilter, fcn: ?*const PlaneResultFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3World_CollideMover" });
 pub const World_enableSleeping = @extern(*const fn (worldId: WorldId, flag: bool) callconv(.c) void, .{ .name = "b3World_EnableSleeping" });
 pub const World_isSleepingEnabled = @extern(*const fn (worldId: WorldId) callconv(.c) bool, .{ .name = "b3World_IsSleepingEnabled" });
 pub const World_enableContinuous = @extern(*const fn (worldId: WorldId, flag: bool) callconv(.c) void, .{ .name = "b3World_EnableContinuous" });
@@ -187,7 +187,7 @@ pub const World_setCustomFilterCallback = @extern(*const fn (worldId: WorldId, f
 pub const World_setPreSolveCallback = @extern(*const fn (worldId: WorldId, fcn: ?*const PreSolveFcn, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3World_SetPreSolveCallback" });
 pub const World_setGravity = @extern(*const fn (worldId: WorldId, gravity: Vec3) callconv(.c) void, .{ .name = "b3World_SetGravity" });
 pub const World_getGravity = @extern(*const fn (worldId: WorldId) callconv(.c) Vec3, .{ .name = "b3World_GetGravity" });
-pub const World_explode = @extern(*const fn (worldId: WorldId, explosionDef: [*c]const ExplosionDef) callconv(.c) void, .{ .name = "b3World_Explode" });
+pub const World_explode = @extern(*const fn (worldId: WorldId, explosionDef: *const ExplosionDef) callconv(.c) void, .{ .name = "b3World_Explode" });
 pub const World_setContactTuning = @extern(*const fn (worldId: WorldId, hertz: f32, dampingRatio: f32, contactSpeed: f32) callconv(.c) void, .{ .name = "b3World_SetContactTuning" });
 pub const World_setContactRecycleDistance = @extern(*const fn (worldId: WorldId, recycleDistance: f32) callconv(.c) void, .{ .name = "b3World_SetContactRecycleDistance" });
 pub const World_getContactRecycleDistance = @extern(*const fn (worldId: WorldId) callconv(.c) f32, .{ .name = "b3World_GetContactRecycleDistance" });
@@ -211,12 +211,12 @@ pub const World_rebuildStaticTree = @extern(*const fn (worldId: WorldId) callcon
 pub const World_enableSpeculative = @extern(*const fn (worldId: WorldId, flag: bool) callconv(.c) void, .{ .name = "b3World_EnableSpeculative" });
 pub const createRecording = @extern(*const fn (byteCapacity: c_int) callconv(.c) ?*Recording, .{ .name = "b3CreateRecording" });
 pub const destroyRecording = @extern(*const fn (recording: ?*Recording) callconv(.c) void, .{ .name = "b3DestroyRecording" });
-pub const Recording_getData = @extern(*const fn (recording: ?*const Recording) callconv(.c) [*c]const u8, .{ .name = "b3Recording_GetData" });
+pub const Recording_getData = @extern(*const fn (recording: ?*const Recording) callconv(.c) [*]const u8, .{ .name = "b3Recording_GetData" });
 pub const Recording_getSize = @extern(*const fn (recording: ?*const Recording) callconv(.c) c_int, .{ .name = "b3Recording_GetSize" });
 pub const World_startRecording = @extern(*const fn (worldId: WorldId, recording: ?*Recording) callconv(.c) void, .{ .name = "b3World_StartRecording" });
 pub const World_stopRecording = @extern(*const fn (worldId: WorldId) callconv(.c) void, .{ .name = "b3World_StopRecording" });
-pub const saveRecordingToFile = @extern(*const fn (recording: ?*const Recording, path: [*c]const u8) callconv(.c) bool, .{ .name = "b3SaveRecordingToFile" });
-pub const loadRecordingFromFile = @extern(*const fn (path: [*c]const u8) callconv(.c) ?*Recording, .{ .name = "b3LoadRecordingFromFile" });
+pub const saveRecordingToFile = @extern(*const fn (recording: ?*const Recording, path: [*:0]const u8) callconv(.c) bool, .{ .name = "b3SaveRecordingToFile" });
+pub const loadRecordingFromFile = @extern(*const fn (path: [*:0]const u8) callconv(.c) ?*Recording, .{ .name = "b3LoadRecordingFromFile" });
 pub const validateReplay = @extern(*const fn (data: ?*const anyopaque, size: c_int, workerCount: c_int) callconv(.c) bool, .{ .name = "b3ValidateReplay" });
 pub const RecPlayer_create = @extern(*const fn (data: ?*const anyopaque, size: c_int, workerCount: c_int) callconv(.c) ?*RecPlayer, .{ .name = "b3RecPlayer_Create" });
 pub const RecPlayer_destroy = @extern(*const fn (player: ?*RecPlayer) callconv(.c) void, .{ .name = "b3RecPlayer_Destroy" });
@@ -241,17 +241,17 @@ pub const RecPlayer_getKeyframeBytes = @extern(*const fn (player: ?*const RecPla
 pub const RecPlayer_getBodyCount = @extern(*const fn (player: ?*const RecPlayer) callconv(.c) c_int, .{ .name = "b3RecPlayer_GetBodyCount" });
 pub const RecPlayer_getBodyId = @extern(*const fn (player: ?*const RecPlayer, index: c_int) callconv(.c) BodyId, .{ .name = "b3RecPlayer_GetBodyId" });
 pub const RecPlayer_setDebugShapeCallbacks = @extern(*const fn (player: ?*RecPlayer, createDebugShape: ?*const CreateDebugShapeCallback, destroyDebugShape: ?*const DestroyDebugShapeCallback, context: ?*anyopaque) callconv(.c) void, .{ .name = "b3RecPlayer_SetDebugShapeCallbacks" });
-pub const RecPlayer_drawFrameQueries = @extern(*const fn (player: ?*RecPlayer, draw: [*c]DebugDraw, queryIndex: c_int, selectedIndex: c_int) callconv(.c) void, .{ .name = "b3RecPlayer_DrawFrameQueries" });
+pub const RecPlayer_drawFrameQueries = @extern(*const fn (player: ?*RecPlayer, draw: *DebugDraw, queryIndex: c_int, selectedIndex: c_int) callconv(.c) void, .{ .name = "b3RecPlayer_DrawFrameQueries" });
 pub const RecPlayer_getFrameQueryCount = @extern(*const fn (player: ?*const RecPlayer) callconv(.c) c_int, .{ .name = "b3RecPlayer_GetFrameQueryCount" });
 pub const RecPlayer_getFrameQuery = @extern(*const fn (player: ?*const RecPlayer, index: c_int) callconv(.c) RecQueryInfo, .{ .name = "b3RecPlayer_GetFrameQuery" });
 pub const RecPlayer_getFrameQueryHit = @extern(*const fn (player: ?*const RecPlayer, queryIndex: c_int, hitIndex: c_int) callconv(.c) RecQueryHit, .{ .name = "b3RecPlayer_GetFrameQueryHit" });
-pub const createBody = @extern(*const fn (worldId: WorldId, def: [*c]const BodyDef) callconv(.c) BodyId, .{ .name = "b3CreateBody" });
+pub const createBody = @extern(*const fn (worldId: WorldId, def: *const BodyDef) callconv(.c) BodyId, .{ .name = "b3CreateBody" });
 pub const destroyBody = @extern(*const fn (bodyId: BodyId) callconv(.c) void, .{ .name = "b3DestroyBody" });
 pub const Body_isValid = @extern(*const fn (id: BodyId) callconv(.c) bool, .{ .name = "b3Body_IsValid" });
 pub const Body_getType = @extern(*const fn (bodyId: BodyId) callconv(.c) BodyType, .{ .name = "b3Body_GetType" });
 pub const Body_setType = @extern(*const fn (bodyId: BodyId, @"type": BodyType) callconv(.c) void, .{ .name = "b3Body_SetType" });
-pub const Body_setName = @extern(*const fn (bodyId: BodyId, name: [*c]const u8) callconv(.c) void, .{ .name = "b3Body_SetName" });
-pub const Body_getName = @extern(*const fn (bodyId: BodyId) callconv(.c) [*c]const u8, .{ .name = "b3Body_GetName" });
+pub const Body_setName = @extern(*const fn (bodyId: BodyId, name: [*:0]const u8) callconv(.c) void, .{ .name = "b3Body_SetName" });
+pub const Body_getName = @extern(*const fn (bodyId: BodyId) callconv(.c) [*:0]const u8, .{ .name = "b3Body_GetName" });
 pub const Body_setUserData = @extern(*const fn (bodyId: BodyId, userData: ?*anyopaque) callconv(.c) void, .{ .name = "b3Body_SetUserData" });
 pub const Body_getUserData = @extern(*const fn (bodyId: BodyId) callconv(.c) ?*anyopaque, .{ .name = "b3Body_GetUserData" });
 pub const Body_getPosition = @extern(*const fn (bodyId: BodyId) callconv(.c) Pos, .{ .name = "b3Body_GetPosition" });
@@ -308,32 +308,32 @@ pub const Body_isContactRecyclingEnabled = @extern(*const fn (bodyId: BodyId) ca
 pub const Body_enableHitEvents = @extern(*const fn (bodyId: BodyId, flag: bool) callconv(.c) void, .{ .name = "b3Body_EnableHitEvents" });
 pub const Body_getWorld = @extern(*const fn (bodyId: BodyId) callconv(.c) WorldId, .{ .name = "b3Body_GetWorld" });
 pub const Body_getShapeCount = @extern(*const fn (bodyId: BodyId) callconv(.c) c_int, .{ .name = "b3Body_GetShapeCount" });
-pub const Body_getShapes = @extern(*const fn (bodyId: BodyId, shapeArray: [*c]ShapeId, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Body_GetShapes" });
+pub const Body_getShapes = @extern(*const fn (bodyId: BodyId, shapeArray: *ShapeId, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Body_GetShapes" });
 pub const Body_getJointCount = @extern(*const fn (bodyId: BodyId) callconv(.c) c_int, .{ .name = "b3Body_GetJointCount" });
-pub const Body_getJoints = @extern(*const fn (bodyId: BodyId, jointArray: [*c]JointId, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Body_GetJoints" });
+pub const Body_getJoints = @extern(*const fn (bodyId: BodyId, jointArray: *JointId, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Body_GetJoints" });
 pub const Body_getContactCapacity = @extern(*const fn (bodyId: BodyId) callconv(.c) c_int, .{ .name = "b3Body_GetContactCapacity" });
-pub const Body_getContactData = @extern(*const fn (bodyId: BodyId, contactData: [*c]ContactData, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Body_GetContactData" });
+pub const Body_getContactData = @extern(*const fn (bodyId: BodyId, contactData: *ContactData, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Body_GetContactData" });
 pub const Body_computeAABB = @extern(*const fn (bodyId: BodyId) callconv(.c) AABB, .{ .name = "b3Body_ComputeAABB" });
-pub const Body_getClosestPoint = @extern(*const fn (bodyId: BodyId, result: [*c]Vec3, target: Vec3) callconv(.c) f32, .{ .name = "b3Body_GetClosestPoint" });
+pub const Body_getClosestPoint = @extern(*const fn (bodyId: BodyId, result: *Vec3, target: Vec3) callconv(.c) f32, .{ .name = "b3Body_GetClosestPoint" });
 pub const Body_castRay = @extern(*const fn (bodyId: BodyId, origin: Pos, translation: Vec3, filter: QueryFilter, maxFraction: f32, bodyTransform: WorldTransform) callconv(.c) BodyCastResult, .{ .name = "b3Body_CastRay" });
-pub const Body_castShape = @extern(*const fn (bodyId: BodyId, origin: Pos, proxy: [*c]const ShapeProxy, translation: Vec3, filter: QueryFilter, maxFraction: f32, canEncroach: bool, bodyTransform: WorldTransform) callconv(.c) BodyCastResult, .{ .name = "b3Body_CastShape" });
-pub const Body_overlapShape = @extern(*const fn (bodyId: BodyId, origin: Pos, proxy: [*c]const ShapeProxy, filter: QueryFilter, bodyTransform: WorldTransform) callconv(.c) bool, .{ .name = "b3Body_OverlapShape" });
-pub const Body_collideMover = @extern(*const fn (bodyId: BodyId, bodyPlanes: [*c]BodyPlaneResult, planeCapacity: c_int, origin: Pos, mover: [*c]const Capsule, filter: QueryFilter, bodyTransform: WorldTransform) callconv(.c) c_int, .{ .name = "b3Body_CollideMover" });
-pub const createSphereShape = @extern(*const fn (bodyId: BodyId, def: [*c]const ShapeDef, sphere: [*c]const Sphere) callconv(.c) ShapeId, .{ .name = "b3CreateSphereShape" });
-pub const createCapsuleShape = @extern(*const fn (bodyId: BodyId, def: [*c]const ShapeDef, capsule: [*c]const Capsule) callconv(.c) ShapeId, .{ .name = "b3CreateCapsuleShape" });
-pub const createHullShape = @extern(*const fn (bodyId: BodyId, def: [*c]const ShapeDef, hull: [*c]const HullData) callconv(.c) ShapeId, .{ .name = "b3CreateHullShape" });
-pub const createTransformedHullShape = @extern(*const fn (bodyId: BodyId, def: [*c]const ShapeDef, hull: [*c]const HullData, transform: Transform, scale: Vec3) callconv(.c) ShapeId, .{ .name = "b3CreateTransformedHullShape" });
-pub const createMeshShape = @extern(*const fn (bodyId: BodyId, def: [*c]const ShapeDef, mesh: [*c]const MeshData, scale: Vec3) callconv(.c) ShapeId, .{ .name = "b3CreateMeshShape" });
-pub const createHeightFieldShape = @extern(*const fn (bodyId: BodyId, def: [*c]const ShapeDef, heightField: [*c]const HeightFieldData) callconv(.c) ShapeId, .{ .name = "b3CreateHeightFieldShape" });
-pub const createCompoundShape = @extern(*const fn (bodyId: BodyId, def: [*c]ShapeDef, compound: [*c]const CompoundData) callconv(.c) ShapeId, .{ .name = "b3CreateCompoundShape" });
+pub const Body_castShape = @extern(*const fn (bodyId: BodyId, origin: Pos, proxy: *const ShapeProxy, translation: Vec3, filter: QueryFilter, maxFraction: f32, canEncroach: bool, bodyTransform: WorldTransform) callconv(.c) BodyCastResult, .{ .name = "b3Body_CastShape" });
+pub const Body_overlapShape = @extern(*const fn (bodyId: BodyId, origin: Pos, proxy: *const ShapeProxy, filter: QueryFilter, bodyTransform: WorldTransform) callconv(.c) bool, .{ .name = "b3Body_OverlapShape" });
+pub const Body_collideMover = @extern(*const fn (bodyId: BodyId, bodyPlanes: *BodyPlaneResult, planeCapacity: c_int, origin: Pos, mover: *const Capsule, filter: QueryFilter, bodyTransform: WorldTransform) callconv(.c) c_int, .{ .name = "b3Body_CollideMover" });
+pub const createSphereShape = @extern(*const fn (bodyId: BodyId, def: *const ShapeDef, sphere: *const Sphere) callconv(.c) ShapeId, .{ .name = "b3CreateSphereShape" });
+pub const createCapsuleShape = @extern(*const fn (bodyId: BodyId, def: *const ShapeDef, capsule: *const Capsule) callconv(.c) ShapeId, .{ .name = "b3CreateCapsuleShape" });
+pub const createHullShape = @extern(*const fn (bodyId: BodyId, def: *const ShapeDef, hull: *const HullData) callconv(.c) ShapeId, .{ .name = "b3CreateHullShape" });
+pub const createTransformedHullShape = @extern(*const fn (bodyId: BodyId, def: *const ShapeDef, hull: *const HullData, transform: Transform, scale: Vec3) callconv(.c) ShapeId, .{ .name = "b3CreateTransformedHullShape" });
+pub const createMeshShape = @extern(*const fn (bodyId: BodyId, def: *const ShapeDef, mesh: *const MeshData, scale: Vec3) callconv(.c) ShapeId, .{ .name = "b3CreateMeshShape" });
+pub const createHeightFieldShape = @extern(*const fn (bodyId: BodyId, def: *const ShapeDef, heightField: *const HeightFieldData) callconv(.c) ShapeId, .{ .name = "b3CreateHeightFieldShape" });
+pub const createCompoundShape = @extern(*const fn (bodyId: BodyId, def: *ShapeDef, compound: *const CompoundData) callconv(.c) ShapeId, .{ .name = "b3CreateCompoundShape" });
 pub const destroyShape = @extern(*const fn (shapeId: ShapeId, updateBodyMass: bool) callconv(.c) void, .{ .name = "b3DestroyShape" });
 pub const Shape_isValid = @extern(*const fn (id: ShapeId) callconv(.c) bool, .{ .name = "b3Shape_IsValid" });
 pub const Shape_getType = @extern(*const fn (shapeId: ShapeId) callconv(.c) ShapeType, .{ .name = "b3Shape_GetType" });
 pub const Shape_getBody = @extern(*const fn (shapeId: ShapeId) callconv(.c) BodyId, .{ .name = "b3Shape_GetBody" });
 pub const Shape_getWorld = @extern(*const fn (shapeId: ShapeId) callconv(.c) WorldId, .{ .name = "b3Shape_GetWorld" });
 pub const Shape_isSensor = @extern(*const fn (shapeId: ShapeId) callconv(.c) bool, .{ .name = "b3Shape_IsSensor" });
-pub const Shape_setName = @extern(*const fn (shapeId: ShapeId, name: [*c]const u8) callconv(.c) void, .{ .name = "b3Shape_SetName" });
-pub const Shape_getName = @extern(*const fn (shapeId: ShapeId) callconv(.c) [*c]const u8, .{ .name = "b3Shape_GetName" });
+pub const Shape_setName = @extern(*const fn (shapeId: ShapeId, name: [*:0]const u8) callconv(.c) void, .{ .name = "b3Shape_SetName" });
+pub const Shape_getName = @extern(*const fn (shapeId: ShapeId) callconv(.c) [*:0]const u8, .{ .name = "b3Shape_GetName" });
 pub const Shape_setUserData = @extern(*const fn (shapeId: ShapeId, userData: ?*anyopaque) callconv(.c) void, .{ .name = "b3Shape_SetUserData" });
 pub const Shape_getUserData = @extern(*const fn (shapeId: ShapeId) callconv(.c) ?*anyopaque, .{ .name = "b3Shape_GetUserData" });
 pub const Shape_setDensity = @extern(*const fn (shapeId: ShapeId, density: f32, updateBodyMass: bool) callconv(.c) void, .{ .name = "b3Shape_SetDensity" });
@@ -360,17 +360,17 @@ pub const Shape_areHitEventsEnabled = @extern(*const fn (shapeId: ShapeId) callc
 pub const Shape_rayCast = @extern(*const fn (shapeId: ShapeId, origin: Pos, translation: Vec3) callconv(.c) WorldCastOutput, .{ .name = "b3Shape_RayCast" });
 pub const Shape_getSphere = @extern(*const fn (shapeId: ShapeId) callconv(.c) Sphere, .{ .name = "b3Shape_GetSphere" });
 pub const Shape_getCapsule = @extern(*const fn (shapeId: ShapeId) callconv(.c) Capsule, .{ .name = "b3Shape_GetCapsule" });
-pub const Shape_getHull = @extern(*const fn (shapeId: ShapeId) callconv(.c) [*c]const HullData, .{ .name = "b3Shape_GetHull" });
+pub const Shape_getHull = @extern(*const fn (shapeId: ShapeId) callconv(.c) ?*const HullData, .{ .name = "b3Shape_GetHull" });
 pub const Shape_getMesh = @extern(*const fn (shapeId: ShapeId) callconv(.c) Mesh, .{ .name = "b3Shape_GetMesh" });
-pub const Shape_getHeightField = @extern(*const fn (shapeId: ShapeId) callconv(.c) [*c]const HeightFieldData, .{ .name = "b3Shape_GetHeightField" });
-pub const Shape_setSphere = @extern(*const fn (shapeId: ShapeId, sphere: [*c]const Sphere) callconv(.c) void, .{ .name = "b3Shape_SetSphere" });
-pub const Shape_setCapsule = @extern(*const fn (shapeId: ShapeId, capsule: [*c]const Capsule) callconv(.c) void, .{ .name = "b3Shape_SetCapsule" });
-pub const Shape_setHull = @extern(*const fn (shapeId: ShapeId, hull: [*c]const HullData) callconv(.c) void, .{ .name = "b3Shape_SetHull" });
-pub const Shape_setMesh = @extern(*const fn (shapeId: ShapeId, meshData: [*c]const MeshData, scale: Vec3) callconv(.c) void, .{ .name = "b3Shape_SetMesh" });
+pub const Shape_getHeightField = @extern(*const fn (shapeId: ShapeId) callconv(.c) ?*const HeightFieldData, .{ .name = "b3Shape_GetHeightField" });
+pub const Shape_setSphere = @extern(*const fn (shapeId: ShapeId, sphere: *const Sphere) callconv(.c) void, .{ .name = "b3Shape_SetSphere" });
+pub const Shape_setCapsule = @extern(*const fn (shapeId: ShapeId, capsule: *const Capsule) callconv(.c) void, .{ .name = "b3Shape_SetCapsule" });
+pub const Shape_setHull = @extern(*const fn (shapeId: ShapeId, hull: *const HullData) callconv(.c) void, .{ .name = "b3Shape_SetHull" });
+pub const Shape_setMesh = @extern(*const fn (shapeId: ShapeId, meshData: *const MeshData, scale: Vec3) callconv(.c) void, .{ .name = "b3Shape_SetMesh" });
 pub const Shape_getContactCapacity = @extern(*const fn (shapeId: ShapeId) callconv(.c) c_int, .{ .name = "b3Shape_GetContactCapacity" });
-pub const Shape_getContactData = @extern(*const fn (shapeId: ShapeId, contactData: [*c]ContactData, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Shape_GetContactData" });
+pub const Shape_getContactData = @extern(*const fn (shapeId: ShapeId, contactData: *ContactData, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Shape_GetContactData" });
 pub const Shape_getSensorCapacity = @extern(*const fn (shapeId: ShapeId) callconv(.c) c_int, .{ .name = "b3Shape_GetSensorCapacity" });
-pub const Shape_getSensorData = @extern(*const fn (shapeId: ShapeId, visitorIds: [*c]ShapeId, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Shape_GetSensorData" });
+pub const Shape_getSensorData = @extern(*const fn (shapeId: ShapeId, visitorIds: *ShapeId, capacity: c_int) callconv(.c) c_int, .{ .name = "b3Shape_GetSensorData" });
 pub const Shape_getAABB = @extern(*const fn (shapeId: ShapeId) callconv(.c) AABB, .{ .name = "b3Shape_GetAABB" });
 pub const Shape_computeMassData = @extern(*const fn (shapeId: ShapeId) callconv(.c) MassData, .{ .name = "b3Shape_ComputeMassData" });
 pub const Shape_getClosestPoint = @extern(*const fn (shapeId: ShapeId, target: Vec3) callconv(.c) Vec3, .{ .name = "b3Shape_GetClosestPoint" });
@@ -395,25 +395,25 @@ pub const Joint_getConstraintTorque = @extern(*const fn (jointId: JointId) callc
 pub const Joint_getLinearSeparation = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3Joint_GetLinearSeparation" });
 pub const Joint_getAngularSeparation = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3Joint_GetAngularSeparation" });
 pub const Joint_setConstraintTuning = @extern(*const fn (jointId: JointId, hertz: f32, dampingRatio: f32) callconv(.c) void, .{ .name = "b3Joint_SetConstraintTuning" });
-pub const Joint_getConstraintTuning = @extern(*const fn (jointId: JointId, hertz: [*c]f32, dampingRatio: [*c]f32) callconv(.c) void, .{ .name = "b3Joint_GetConstraintTuning" });
+pub const Joint_getConstraintTuning = @extern(*const fn (jointId: JointId, hertz: *f32, dampingRatio: *f32) callconv(.c) void, .{ .name = "b3Joint_GetConstraintTuning" });
 pub const Joint_setForceThreshold = @extern(*const fn (jointId: JointId, threshold: f32) callconv(.c) void, .{ .name = "b3Joint_SetForceThreshold" });
 pub const Joint_getForceThreshold = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3Joint_GetForceThreshold" });
 pub const Joint_setTorqueThreshold = @extern(*const fn (jointId: JointId, threshold: f32) callconv(.c) void, .{ .name = "b3Joint_SetTorqueThreshold" });
 pub const Joint_getTorqueThreshold = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3Joint_GetTorqueThreshold" });
-pub const createParallelJoint = @extern(*const fn (worldId: WorldId, def: [*c]const ParallelJointDef) callconv(.c) JointId, .{ .name = "b3CreateParallelJoint" });
+pub const createParallelJoint = @extern(*const fn (worldId: WorldId, def: *const ParallelJointDef) callconv(.c) JointId, .{ .name = "b3CreateParallelJoint" });
 pub const ParallelJoint_setSpringHertz = @extern(*const fn (jointId: JointId, hertz: f32) callconv(.c) void, .{ .name = "b3ParallelJoint_SetSpringHertz" });
 pub const ParallelJoint_setSpringDampingRatio = @extern(*const fn (jointId: JointId, dampingRatio: f32) callconv(.c) void, .{ .name = "b3ParallelJoint_SetSpringDampingRatio" });
 pub const ParallelJoint_getSpringHertz = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3ParallelJoint_GetSpringHertz" });
 pub const ParallelJoint_getSpringDampingRatio = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3ParallelJoint_GetSpringDampingRatio" });
 pub const ParallelJoint_setMaxTorque = @extern(*const fn (jointId: JointId, force: f32) callconv(.c) void, .{ .name = "b3ParallelJoint_SetMaxTorque" });
 pub const ParallelJoint_getMaxTorque = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3ParallelJoint_GetMaxTorque" });
-pub const createDistanceJoint = @extern(*const fn (worldId: WorldId, def: [*c]const DistanceJointDef) callconv(.c) JointId, .{ .name = "b3CreateDistanceJoint" });
+pub const createDistanceJoint = @extern(*const fn (worldId: WorldId, def: *const DistanceJointDef) callconv(.c) JointId, .{ .name = "b3CreateDistanceJoint" });
 pub const DistanceJoint_setLength = @extern(*const fn (jointId: JointId, length: f32) callconv(.c) void, .{ .name = "b3DistanceJoint_SetLength" });
 pub const DistanceJoint_getLength = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3DistanceJoint_GetLength" });
 pub const DistanceJoint_enableSpring = @extern(*const fn (jointId: JointId, enableSpring: bool) callconv(.c) void, .{ .name = "b3DistanceJoint_EnableSpring" });
 pub const DistanceJoint_isSpringEnabled = @extern(*const fn (jointId: JointId) callconv(.c) bool, .{ .name = "b3DistanceJoint_IsSpringEnabled" });
 pub const DistanceJoint_setSpringForceRange = @extern(*const fn (jointId: JointId, lowerForce: f32, upperForce: f32) callconv(.c) void, .{ .name = "b3DistanceJoint_SetSpringForceRange" });
-pub const DistanceJoint_getSpringForceRange = @extern(*const fn (jointId: JointId, lowerForce: [*c]f32, upperForce: [*c]f32) callconv(.c) void, .{ .name = "b3DistanceJoint_GetSpringForceRange" });
+pub const DistanceJoint_getSpringForceRange = @extern(*const fn (jointId: JointId, lowerForce: *f32, upperForce: *f32) callconv(.c) void, .{ .name = "b3DistanceJoint_GetSpringForceRange" });
 pub const DistanceJoint_setSpringHertz = @extern(*const fn (jointId: JointId, hertz: f32) callconv(.c) void, .{ .name = "b3DistanceJoint_SetSpringHertz" });
 pub const DistanceJoint_setSpringDampingRatio = @extern(*const fn (jointId: JointId, dampingRatio: f32) callconv(.c) void, .{ .name = "b3DistanceJoint_SetSpringDampingRatio" });
 pub const DistanceJoint_getSpringHertz = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3DistanceJoint_GetSpringHertz" });
@@ -431,7 +431,7 @@ pub const DistanceJoint_getMotorSpeed = @extern(*const fn (jointId: JointId) cal
 pub const DistanceJoint_setMaxMotorForce = @extern(*const fn (jointId: JointId, force: f32) callconv(.c) void, .{ .name = "b3DistanceJoint_SetMaxMotorForce" });
 pub const DistanceJoint_getMaxMotorForce = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3DistanceJoint_GetMaxMotorForce" });
 pub const DistanceJoint_getMotorForce = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3DistanceJoint_GetMotorForce" });
-pub const createMotorJoint = @extern(*const fn (worldId: WorldId, def: [*c]const MotorJointDef) callconv(.c) JointId, .{ .name = "b3CreateMotorJoint" });
+pub const createMotorJoint = @extern(*const fn (worldId: WorldId, def: *const MotorJointDef) callconv(.c) JointId, .{ .name = "b3CreateMotorJoint" });
 pub const MotorJoint_setLinearVelocity = @extern(*const fn (jointId: JointId, velocity: Vec3) callconv(.c) void, .{ .name = "b3MotorJoint_SetLinearVelocity" });
 pub const MotorJoint_getLinearVelocity = @extern(*const fn (jointId: JointId) callconv(.c) Vec3, .{ .name = "b3MotorJoint_GetLinearVelocity" });
 pub const MotorJoint_setAngularVelocity = @extern(*const fn (jointId: JointId, velocity: Vec3) callconv(.c) void, .{ .name = "b3MotorJoint_SetAngularVelocity" });
@@ -452,8 +452,8 @@ pub const MotorJoint_setMaxSpringForce = @extern(*const fn (jointId: JointId, ma
 pub const MotorJoint_getMaxSpringForce = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3MotorJoint_GetMaxSpringForce" });
 pub const MotorJoint_setMaxSpringTorque = @extern(*const fn (jointId: JointId, maxTorque: f32) callconv(.c) void, .{ .name = "b3MotorJoint_SetMaxSpringTorque" });
 pub const MotorJoint_getMaxSpringTorque = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3MotorJoint_GetMaxSpringTorque" });
-pub const createFilterJoint = @extern(*const fn (worldId: WorldId, def: [*c]const FilterJointDef) callconv(.c) JointId, .{ .name = "b3CreateFilterJoint" });
-pub const createPrismaticJoint = @extern(*const fn (worldId: WorldId, def: [*c]const PrismaticJointDef) callconv(.c) JointId, .{ .name = "b3CreatePrismaticJoint" });
+pub const createFilterJoint = @extern(*const fn (worldId: WorldId, def: *const FilterJointDef) callconv(.c) JointId, .{ .name = "b3CreateFilterJoint" });
+pub const createPrismaticJoint = @extern(*const fn (worldId: WorldId, def: *const PrismaticJointDef) callconv(.c) JointId, .{ .name = "b3CreatePrismaticJoint" });
 pub const PrismaticJoint_enableSpring = @extern(*const fn (jointId: JointId, enableSpring: bool) callconv(.c) void, .{ .name = "b3PrismaticJoint_EnableSpring" });
 pub const PrismaticJoint_isSpringEnabled = @extern(*const fn (jointId: JointId) callconv(.c) bool, .{ .name = "b3PrismaticJoint_IsSpringEnabled" });
 pub const PrismaticJoint_setSpringHertz = @extern(*const fn (jointId: JointId, hertz: f32) callconv(.c) void, .{ .name = "b3PrismaticJoint_SetSpringHertz" });
@@ -476,7 +476,7 @@ pub const PrismaticJoint_getMaxMotorForce = @extern(*const fn (jointId: JointId)
 pub const PrismaticJoint_getMotorForce = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3PrismaticJoint_GetMotorForce" });
 pub const PrismaticJoint_getTranslation = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3PrismaticJoint_GetTranslation" });
 pub const PrismaticJoint_getSpeed = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3PrismaticJoint_GetSpeed" });
-pub const createRevoluteJoint = @extern(*const fn (worldId: WorldId, def: [*c]const RevoluteJointDef) callconv(.c) JointId, .{ .name = "b3CreateRevoluteJoint" });
+pub const createRevoluteJoint = @extern(*const fn (worldId: WorldId, def: *const RevoluteJointDef) callconv(.c) JointId, .{ .name = "b3CreateRevoluteJoint" });
 pub const RevoluteJoint_enableSpring = @extern(*const fn (jointId: JointId, enableSpring: bool) callconv(.c) void, .{ .name = "b3RevoluteJoint_EnableSpring" });
 pub const RevoluteJoint_isSpringEnabled = @extern(*const fn (jointId: JointId) callconv(.c) bool, .{ .name = "b3RevoluteJoint_IsSpringEnabled" });
 pub const RevoluteJoint_setSpringHertz = @extern(*const fn (jointId: JointId, hertz: f32) callconv(.c) void, .{ .name = "b3RevoluteJoint_SetSpringHertz" });
@@ -498,7 +498,7 @@ pub const RevoluteJoint_getMotorSpeed = @extern(*const fn (jointId: JointId) cal
 pub const RevoluteJoint_getMotorTorque = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3RevoluteJoint_GetMotorTorque" });
 pub const RevoluteJoint_setMaxMotorTorque = @extern(*const fn (jointId: JointId, torque: f32) callconv(.c) void, .{ .name = "b3RevoluteJoint_SetMaxMotorTorque" });
 pub const RevoluteJoint_getMaxMotorTorque = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3RevoluteJoint_GetMaxMotorTorque" });
-pub const createSphericalJoint = @extern(*const fn (worldId: WorldId, def: [*c]const SphericalJointDef) callconv(.c) JointId, .{ .name = "b3CreateSphericalJoint" });
+pub const createSphericalJoint = @extern(*const fn (worldId: WorldId, def: *const SphericalJointDef) callconv(.c) JointId, .{ .name = "b3CreateSphericalJoint" });
 pub const SphericalJoint_enableConeLimit = @extern(*const fn (jointId: JointId, enableLimit: bool) callconv(.c) void, .{ .name = "b3SphericalJoint_EnableConeLimit" });
 pub const SphericalJoint_isConeLimitEnabled = @extern(*const fn (jointId: JointId) callconv(.c) bool, .{ .name = "b3SphericalJoint_IsConeLimitEnabled" });
 pub const SphericalJoint_getConeLimit = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3SphericalJoint_GetConeLimit" });
@@ -525,7 +525,7 @@ pub const SphericalJoint_getMotorVelocity = @extern(*const fn (jointId: JointId)
 pub const SphericalJoint_getMotorTorque = @extern(*const fn (jointId: JointId) callconv(.c) Vec3, .{ .name = "b3SphericalJoint_GetMotorTorque" });
 pub const SphericalJoint_setMaxMotorTorque = @extern(*const fn (jointId: JointId, torque: f32) callconv(.c) void, .{ .name = "b3SphericalJoint_SetMaxMotorTorque" });
 pub const SphericalJoint_getMaxMotorTorque = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3SphericalJoint_GetMaxMotorTorque" });
-pub const createWeldJoint = @extern(*const fn (worldId: WorldId, def: [*c]const WeldJointDef) callconv(.c) JointId, .{ .name = "b3CreateWeldJoint" });
+pub const createWeldJoint = @extern(*const fn (worldId: WorldId, def: *const WeldJointDef) callconv(.c) JointId, .{ .name = "b3CreateWeldJoint" });
 pub const WeldJoint_setLinearHertz = @extern(*const fn (jointId: JointId, hertz: f32) callconv(.c) void, .{ .name = "b3WeldJoint_SetLinearHertz" });
 pub const WeldJoint_getLinearHertz = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3WeldJoint_GetLinearHertz" });
 pub const WeldJoint_setLinearDampingRatio = @extern(*const fn (jointId: JointId, dampingRatio: f32) callconv(.c) void, .{ .name = "b3WeldJoint_SetLinearDampingRatio" });
@@ -534,7 +534,7 @@ pub const WeldJoint_setAngularHertz = @extern(*const fn (jointId: JointId, hertz
 pub const WeldJoint_getAngularHertz = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3WeldJoint_GetAngularHertz" });
 pub const WeldJoint_setAngularDampingRatio = @extern(*const fn (jointId: JointId, dampingRatio: f32) callconv(.c) void, .{ .name = "b3WeldJoint_SetAngularDampingRatio" });
 pub const WeldJoint_getAngularDampingRatio = @extern(*const fn (jointId: JointId) callconv(.c) f32, .{ .name = "b3WeldJoint_GetAngularDampingRatio" });
-pub const createWheelJoint = @extern(*const fn (worldId: WorldId, def: [*c]const WheelJointDef) callconv(.c) JointId, .{ .name = "b3CreateWheelJoint" });
+pub const createWheelJoint = @extern(*const fn (worldId: WorldId, def: *const WheelJointDef) callconv(.c) JointId, .{ .name = "b3CreateWheelJoint" });
 pub const WheelJoint_enableSuspension = @extern(*const fn (jointId: JointId, flag: bool) callconv(.c) void, .{ .name = "b3WheelJoint_EnableSuspension" });
 pub const WheelJoint_isSuspensionEnabled = @extern(*const fn (jointId: JointId) callconv(.c) bool, .{ .name = "b3WheelJoint_IsSuspensionEnabled" });
 pub const WheelJoint_setSuspensionHertz = @extern(*const fn (jointId: JointId, hertz: f32) callconv(.c) void, .{ .name = "b3WheelJoint_SetSuspensionHertz" });
@@ -576,7 +576,7 @@ pub const Contact_getData = @extern(*const fn (contactId: ContactId) callconv(.c
 pub const setAllocator = @extern(*const fn (allocFcn: ?*const AllocFcn, freeFcn: ?*const FreeFcn) callconv(.c) void, .{ .name = "b3SetAllocator" });
 pub const getByteCount = @extern(*const fn () callconv(.c) i32, .{ .name = "b3GetByteCount" });
 pub const setAssertFcn = @extern(*const fn (assertFcn: ?*const AssertFcn) callconv(.c) void, .{ .name = "b3SetAssertFcn" });
-pub const internalAssert = @extern(*const fn (condition: [*c]const u8, fileName: [*c]const u8, lineNumber: c_int) callconv(.c) c_int, .{ .name = "b3InternalAssert" });
+pub const internalAssert = @extern(*const fn (condition: *const u8, fileName: [*:0]const u8, lineNumber: c_int) callconv(.c) c_int, .{ .name = "b3InternalAssert" });
 pub const setLogFcn = @extern(*const fn (logFcn: ?*const LogFcn) callconv(.c) void, .{ .name = "b3SetLogFcn" });
 
 pub fn storeWorldId(arg_id: WorldId) u32 {
@@ -642,7 +642,7 @@ pub fn loadJointId(arg_x: u64) JointId {
     _ = &id;
     return id;
 }
-pub fn storeContactId(arg_id: ContactId, arg_values: [*c]u32) void {
+pub fn storeContactId(arg_id: ContactId, arg_values: *u32) void {
     var id = arg_id;
     _ = &id;
     var values = arg_values;
@@ -651,7 +651,7 @@ pub fn storeContactId(arg_id: ContactId, arg_values: [*c]u32) void {
     values[@as(c_int, 1)] = id.world0;
     values[@as(c_int, 2)] = id.generation;
 }
-pub fn loadContactId(arg_values: [*c]u32) ContactId {
+pub fn loadContactId(arg_values: *u32) ContactId {
     var values = arg_values;
     _ = &values;
     var id: ContactId = undefined;
@@ -849,7 +849,7 @@ pub fn normalize(arg_a: Vec3) Vec3 {
         .z = 0.0,
     };
 }
-pub fn getLengthAndNormalize(arg_length: [*c]f32, arg_a: Vec3) Vec3 {
+pub fn getLengthAndNormalize(arg_length: *f32, arg_a: Vec3) Vec3 {
     var len = arg_length;
     _ = &len;
     var a = arg_a;
@@ -1192,7 +1192,7 @@ pub fn makeQuatFromAxisAngle(arg_axis: Vec3, arg_radians: f32) Quat {
     _ = &q;
     return q;
 }
-pub fn getAxisAngle(arg_radians: [*c]f32, arg_q: Quat) Vec3 {
+pub fn getAxisAngle(arg_radians: *f32, arg_q: Quat) Vec3 {
     var radians = arg_radians;
     _ = &radians;
     var q = arg_q;
@@ -1692,7 +1692,7 @@ pub fn absMatrix3(arg_m: Matrix3) Matrix3 {
     out.cz = abs(m.cz);
     return out;
 }
-pub inline fn MakeMatrixFromQuat(arg_q: Quat) Matrix3 {
+pub inline fn makeMatrixFromQuat(arg_q: Quat) Matrix3 {
     var q = arg_q;
     _ = &q;
     var xx: f32 = q.v.x * q.v.x;
@@ -1732,7 +1732,7 @@ pub inline fn MakeMatrixFromQuat(arg_q: Quat) Matrix3 {
     };
 }
 
-pub fn makeAABB(arg_points: [*c]const Vec3, arg_count: c_int, arg_radius: f32) AABB {
+pub fn makeAABB(arg_points: *const Vec3, arg_count: c_int, arg_radius: f32) AABB {
     var points = arg_points;
     _ = &points;
     var count = arg_count;
@@ -1838,7 +1838,7 @@ pub fn AABB_transform(arg_transform: Transform, arg_a: AABB) AABB {
     _ = &a;
     var center: Vec3 = transformPoint(transform, AABB_center(a));
     _ = &center;
-    var m: Matrix3 = MakeMatrixFromQuat(transform.q);
+    var m: Matrix3 = makeMatrixFromQuat(transform.q);
     _ = &m;
     var extent: Vec3 = mulMV(absMatrix3(m), AABB_extents(a));
     _ = &extent;
@@ -1857,21 +1857,21 @@ pub fn closestPointToAABB(arg_point: Vec3, arg_a: AABB) Vec3 {
     return clamp(point, a.lowerBound, a.upperBound);
 }
 
-pub fn DynamicTree_getUserData(arg_tree: [*c]const DynamicTree, arg_proxyId: c_int) u64 {
+pub fn DynamicTree_getUserData(arg_tree: *const DynamicTree, arg_proxyId: c_int) u64 {
     var tree = arg_tree;
     _ = &tree;
     var proxyId = arg_proxyId;
     _ = &proxyId;
-    return tree.*.nodes[@bitCast(@as(isize, @intCast(proxyId)))].unnamed_0.userData;
+    return tree.*.nodes[@bitCast(@as(isize, @intCast(proxyId)))].payload.userData;
 }
-pub fn DynamicTree_getAABB(arg_tree: [*c]const DynamicTree, arg_proxyId: c_int) AABB {
+pub fn DynamicTree_getAABB(arg_tree: *const DynamicTree, arg_proxyId: c_int) AABB {
     var tree = arg_tree;
     _ = &tree;
     var proxyId = arg_proxyId;
     _ = &proxyId;
     return tree.*.nodes[@bitCast(@as(isize, @intCast(proxyId)))].aabb;
 }
-pub fn getHullVertices(arg_hull: [*c]const HullData) [*c]const HullVertex {
+pub fn getHullVertices(arg_hull: *const HullData) ?[*]const HullVertex {
     var hull = arg_hull;
     _ = &hull;
     if (hull.*.vertexOffset == @as(c_int, 0)) {
@@ -1879,7 +1879,7 @@ pub fn getHullVertices(arg_hull: [*c]const HullData) [*c]const HullVertex {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hull))) + @as(isize, hull.*.vertexOffset))));
 }
-pub fn getHullPoints(arg_hull: [*c]const HullData) [*c]const Vec3 {
+pub fn getHullPoints(arg_hull: *const HullData) ?[*]const Vec3 {
     var hull = arg_hull;
     _ = &hull;
     if (hull.*.pointOffset == @as(c_int, 0)) {
@@ -1887,7 +1887,7 @@ pub fn getHullPoints(arg_hull: [*c]const HullData) [*c]const Vec3 {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hull))) + @as(isize, hull.*.pointOffset))));
 }
-pub fn getHullEdges(arg_hull: [*c]const HullData) [*c]const HullHalfEdge {
+pub fn getHullEdges(arg_hull: *const HullData) ?[*]const HullHalfEdge {
     var hull = arg_hull;
     _ = &hull;
     if (hull.*.edgeOffset == @as(c_int, 0)) {
@@ -1895,7 +1895,7 @@ pub fn getHullEdges(arg_hull: [*c]const HullData) [*c]const HullHalfEdge {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hull))) + @as(isize, hull.*.edgeOffset))));
 }
-pub fn getHullFaces(arg_hull: [*c]const HullData) [*c]const HullFace {
+pub fn getHullFaces(arg_hull: *const HullData) ?[*]const HullFace {
     var hull = arg_hull;
     _ = &hull;
     if (hull.*.faceOffset == @as(c_int, 0)) {
@@ -1903,7 +1903,7 @@ pub fn getHullFaces(arg_hull: [*c]const HullData) [*c]const HullFace {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hull))) + @as(isize, hull.*.faceOffset))));
 }
-pub fn getHullPlanes(arg_hull: [*c]const HullData) [*c]const Plane {
+pub fn getHullPlanes(arg_hull: *const HullData) ?[*]const Plane {
     var hull = arg_hull;
     _ = &hull;
     if (hull.*.planeOffset == @as(c_int, 0)) {
@@ -1912,7 +1912,7 @@ pub fn getHullPlanes(arg_hull: [*c]const HullData) [*c]const Plane {
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hull))) + @as(isize, hull.*.planeOffset))));
 }
 
-pub fn getMeshNodes(arg_mesh: [*c]const MeshData) ?*const MeshNode {
+pub fn getMeshNodes(arg_mesh: *const MeshData) ?*const MeshNode {
     var mesh = arg_mesh;
     _ = &mesh;
     if (mesh.*.nodeOffset == @as(c_int, 0)) {
@@ -1920,7 +1920,7 @@ pub fn getMeshNodes(arg_mesh: [*c]const MeshData) ?*const MeshNode {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(mesh))) + @as(isize, mesh.*.nodeOffset))));
 }
-pub fn getMeshVertices(arg_mesh: [*c]const MeshData) [*c]const Vec3 {
+pub fn getMeshVertices(arg_mesh: *const MeshData) ?[*]const Vec3 {
     var mesh = arg_mesh;
     _ = &mesh;
     if (mesh.*.vertexOffset == @as(c_int, 0)) {
@@ -1928,7 +1928,7 @@ pub fn getMeshVertices(arg_mesh: [*c]const MeshData) [*c]const Vec3 {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(mesh))) + @as(isize, mesh.*.vertexOffset))));
 }
-pub fn getMeshTriangles(arg_mesh: [*c]const MeshData) [*c]const MeshTriangle {
+pub fn getMeshTriangles(arg_mesh: *const MeshData) ?[*]const MeshTriangle {
     var mesh = arg_mesh;
     _ = &mesh;
     if (mesh.*.triangleOffset == @as(c_int, 0)) {
@@ -1936,7 +1936,7 @@ pub fn getMeshTriangles(arg_mesh: [*c]const MeshData) [*c]const MeshTriangle {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(mesh))) + @as(isize, mesh.*.triangleOffset))));
 }
-pub fn getMeshMaterialIndices(arg_mesh: [*c]const MeshData) [*c]const u8 {
+pub fn getMeshMaterialIndices(arg_mesh: *const MeshData) ?[*]const u8 {
     var mesh = arg_mesh;
     _ = &mesh;
     if (mesh.*.materialOffset == @as(c_int, 0)) {
@@ -1944,7 +1944,7 @@ pub fn getMeshMaterialIndices(arg_mesh: [*c]const MeshData) [*c]const u8 {
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(mesh))) + @as(isize, mesh.*.materialOffset))));
 }
-pub fn getMeshFlags(arg_mesh: [*c]const MeshData) [*c]const u8 {
+pub fn getMeshFlags(arg_mesh: *const MeshData) ?[*]const u8 {
     var mesh = arg_mesh;
     _ = &mesh;
     if (mesh.*.flagsOffset == @as(c_int, 0)) {
@@ -1953,7 +1953,7 @@ pub fn getMeshFlags(arg_mesh: [*c]const MeshData) [*c]const u8 {
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(mesh))) + @as(isize, mesh.*.flagsOffset))));
 }
 
-pub fn getHeightFieldCompressedHeights(arg_hf: [*c]const HeightFieldData) [*c]const u16 {
+pub fn getHeightFieldCompressedHeights(arg_hf: *const HeightFieldData) ?[*]const u16 {
     var hf = arg_hf;
     _ = &hf;
     if (hf.*.heightsOffset == @as(c_int, 0)) {
@@ -1961,7 +1961,7 @@ pub fn getHeightFieldCompressedHeights(arg_hf: [*c]const HeightFieldData) [*c]co
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hf))) + @as(isize, hf.*.heightsOffset))));
 }
-pub fn getHeightFieldMaterialIndices(arg_hf: [*c]const HeightFieldData) [*c]const u8 {
+pub fn getHeightFieldMaterialIndices(arg_hf: *const HeightFieldData) ?[*]const u8 {
     var hf = arg_hf;
     _ = &hf;
     if (hf.*.materialOffset == @as(c_int, 0)) {
@@ -1969,7 +1969,7 @@ pub fn getHeightFieldMaterialIndices(arg_hf: [*c]const HeightFieldData) [*c]cons
     }
     return @ptrFromInt(@as(usize, @intCast(@as(isize, @intCast(@intFromPtr(hf))) + @as(isize, hf.*.materialOffset))));
 }
-pub fn getHeightFieldFlags(arg_hf: [*c]const HeightFieldData) [*c]const u8 {
+pub fn getHeightFieldFlags(arg_hf: *const HeightFieldData) ?[*]const u8 {
     var hf = arg_hf;
     _ = &hf;
     if (hf.*.flagsOffset == @as(c_int, 0)) {
@@ -2151,8 +2151,8 @@ pub const JointId = extern struct {
 };
 pub const AllocFcn = fn (size: i32, alignment: i32) callconv(.c) ?*anyopaque;
 pub const FreeFcn = fn (mem: ?*anyopaque) callconv(.c) void;
-pub const AssertFcn = fn (condition: [*c]const u8, fileName: [*c]const u8, lineNumber: c_int) callconv(.c) c_int;
-pub const LogFcn = fn (message: [*c]const u8) callconv(.c) void;
+pub const AssertFcn = fn (condition: [*:0]const u8, fileName: [*:0]const u8, lineNumber: c_int) callconv(.c) c_int;
+pub const LogFcn = fn (message: [*:0]const u8) callconv(.c) void;
 pub const Version = extern struct {
     major: c_int = 0,
     minor: c_int = 0,
@@ -2190,7 +2190,7 @@ pub const _nullContactId: ContactId = ContactId{
     .generation = 0,
 };
 pub const TaskCallback = fn (taskContext: ?*anyopaque) callconv(.c) void;
-pub const EnqueueTaskCallback = fn (task: ?*const TaskCallback, taskContext: ?*anyopaque, userContext: ?*anyopaque, taskName: [*c]const u8) callconv(.c) ?*anyopaque;
+pub const EnqueueTaskCallback = fn (task: ?*const TaskCallback, taskContext: ?*anyopaque, userContext: ?*anyopaque, taskName: [*:0]const u8) callconv(.c) ?*anyopaque;
 pub const FinishTaskCallback = fn (userTask: ?*anyopaque, userContext: ?*anyopaque) callconv(.c) void;
 
 pub const ShapeType = enum(c_uint) {
@@ -2210,34 +2210,34 @@ pub const TreeNodeChildren = extern struct {
     child1: c_int = 0,
     child2: c_int = 0,
 };
-const union_unnamed_3 = extern union {
+const TreeNodePayload = extern union {
     children: TreeNodeChildren,
     userData: u64,
 };
-const union_unnamed_4 = extern union {
+const TreeNodeLinks = extern union {
     parent: c_int,
     next: c_int,
 };
 pub const TreeNode = extern struct {
     aabb: AABB = std.mem.zeroes(AABB),
     categoryBits: u64 = 0,
-    unnamed_0: union_unnamed_3 = std.mem.zeroes(union_unnamed_3),
-    unnamed_1: union_unnamed_4 = std.mem.zeroes(union_unnamed_4),
+    payload: TreeNodePayload = std.mem.zeroes(TreeNodePayload),
+    links: TreeNodeLinks = std.mem.zeroes(TreeNodeLinks),
     height: u16 = 0,
     flags: u16 = 0,
 };
 pub const DynamicTree = extern struct {
     version: u64 = 0,
-    nodes: [*c]TreeNode = null,
+    nodes: ?[*]TreeNode = null,
     root: c_int = 0,
     nodeCount: c_int = 0,
     nodeCapacity: c_int = 0,
     proxyCount: c_int = 0,
     freeList: c_int = 0,
-    leafIndices: [*c]c_int = null,
-    leafBoxes: [*c]AABB = null,
-    leafCenters: [*c]Vec3 = null,
-    binIndices: [*c]c_int = null,
+    leafIndices: ?[*]c_int = null,
+    leafBoxes: ?[*]AABB = null,
+    leafCenters: ?[*]Vec3 = null,
+    binIndices: ?[*]c_int = null,
     rebuildCapacity: c_int = 0,
 };
 pub const CompoundData = extern struct {
@@ -2314,27 +2314,27 @@ pub const MeshData = extern struct {
     flagsOffset: c_int = 0,
 };
 pub const Mesh = extern struct {
-    data: [*c]const MeshData = null,
+    data: ?*const MeshData = null,
     scale: Vec3 = std.mem.zeroes(Vec3),
 };
 pub const Sphere = extern struct {
     center: Vec3 = std.mem.zeroes(Vec3),
     radius: f32 = 0,
 };
-const union_unnamed_2 = extern union {
-    capsule: [*c]const Capsule,
-    compound: [*c]const CompoundData,
-    heightField: [*c]const HeightFieldData,
-    hull: [*c]const HullData,
-    mesh: [*c]const Mesh,
-    sphere: [*c]const Sphere,
+const DebugShapePayload = extern union {
+    capsule: *const Capsule,
+    compound: *const CompoundData,
+    heightField: *const HeightFieldData,
+    hull: *const HullData,
+    mesh: *const Mesh,
+    sphere: *const Sphere,
 };
 pub const DebugShape = extern struct {
     shapeId: ShapeId = std.mem.zeroes(ShapeId),
     type: ShapeType = std.mem.zeroes(ShapeType),
-    unnamed_0: union_unnamed_2 = std.mem.zeroes(union_unnamed_2),
+    payload: DebugShapePayload = std.mem.zeroes(DebugShapePayload),
 };
-pub const CreateDebugShapeCallback = fn (debugShape: [*c]const DebugShape, userContext: ?*anyopaque) callconv(.c) ?*anyopaque;
+pub const CreateDebugShapeCallback = fn (debugShape: *const DebugShape, userContext: ?*anyopaque) callconv(.c) ?*anyopaque;
 pub const DestroyDebugShapeCallback = fn (userShape: ?*anyopaque, userContext: ?*anyopaque) callconv(.c) void;
 pub const FrictionCallback = fn (frictionA: f32, userMaterialIdA: u64, frictionB: f32, userMaterialIdB: u64) callconv(.c) f32;
 pub const RestitutionCallback = fn (restitutionA: f32, userMaterialIdA: u64, restitutionB: f32, userMaterialIdB: u64) callconv(.c) f32;
@@ -2396,7 +2396,7 @@ pub const BodyDef = extern struct {
     angularDamping: f32 = 0,
     gravityScale: f32 = 0,
     sleepThreshold: f32 = 0,
-    name: [*c]const u8 = null,
+    name: ?[*:0]const u8 = null,
     userData: ?*anyopaque = null,
     motionLocks: MotionLocks = std.mem.zeroes(MotionLocks),
     enableSleep: bool = false,
@@ -2424,9 +2424,9 @@ pub const SurfaceMaterial = extern struct {
 };
 
 pub const ShapeDef = extern struct {
-    name: [*c]const u8 = null,
+    name: ?[*:0]const u8 = null,
     userData: ?*anyopaque = null,
-    materials: [*c]SurfaceMaterial = null,
+    materials: ?[*]SurfaceMaterial = null,
     materialCount: c_int = 0,
     baseMaterial: SurfaceMaterial = std.mem.zeroes(SurfaceMaterial),
     density: f32 = 0,
@@ -2646,8 +2646,8 @@ pub const SensorEndTouchEvent = extern struct {
     visitorShapeId: ShapeId = std.mem.zeroes(ShapeId),
 };
 pub const SensorEvents = extern struct {
-    beginEvents: [*c]SensorBeginTouchEvent = null,
-    endEvents: [*c]SensorEndTouchEvent = null,
+    beginEvents: ?[*]SensorBeginTouchEvent = null,
+    endEvents: ?[*]SensorEndTouchEvent = null,
     beginCount: c_int = 0,
     endCount: c_int = 0,
 };
@@ -2672,9 +2672,9 @@ pub const ContactHitEvent = extern struct {
     userMaterialIdB: u64 = 0,
 };
 pub const ContactEvents = extern struct {
-    beginEvents: [*c]ContactBeginTouchEvent = null,
-    endEvents: [*c]ContactEndTouchEvent = null,
-    hitEvents: [*c]ContactHitEvent = null,
+    beginEvents: ?[*]ContactBeginTouchEvent = null,
+    endEvents: ?[*]ContactEndTouchEvent = null,
+    hitEvents: ?[*]ContactHitEvent = null,
     beginCount: c_int = 0,
     endCount: c_int = 0,
     hitCount: c_int = 0,
@@ -2686,7 +2686,7 @@ pub const BodyMoveEvent = extern struct {
     fellAsleep: bool = false,
 };
 pub const BodyEvents = extern struct {
-    moveEvents: [*c]BodyMoveEvent = null,
+    moveEvents: ?[*]BodyMoveEvent = null,
     moveCount: c_int = 0,
 };
 pub const JointEvent = extern struct {
@@ -2694,7 +2694,7 @@ pub const JointEvent = extern struct {
     userData: ?*anyopaque = null,
 };
 pub const JointEvents = extern struct {
-    jointEvents: [*c]JointEvent = null,
+    jointEvents: ?[*]JointEvent = null,
     count: c_int = 0,
 };
 pub const ManifoldPoint = extern struct {
@@ -2721,14 +2721,14 @@ pub const ContactData = extern struct {
     contactId: ContactId = std.mem.zeroes(ContactId),
     shapeIdA: ShapeId = std.mem.zeroes(ShapeId),
     shapeIdB: ShapeId = std.mem.zeroes(ShapeId),
-    manifolds: [*c]const Manifold = null,
+    manifolds: ?[*]const Manifold = null,
     manifoldCount: c_int = 0,
 };
 pub const QueryFilter = extern struct {
     categoryBits: u64 = 0,
     maskBits: u64 = 0,
     id: u64 = 0,
-    name: [*c]const u8 = null,
+    name: ?[*:0]const u8 = null,
 };
 
 pub const RayCastInput = extern struct {
@@ -2749,7 +2749,7 @@ pub const RayResult = extern struct {
     hit: bool = false,
 };
 pub const ShapeProxy = extern struct {
-    points: [*c]const Vec3 = null,
+    points: ?[*]const Vec3 = null,
     count: c_int = 0,
     radius: f32 = 0,
 };
@@ -2875,8 +2875,8 @@ pub const TreeStats = extern struct {
 };
 pub const TreeQueryCallbackFcn = fn (proxyId: c_int, userData: u64, context: ?*anyopaque) callconv(.c) bool;
 pub const TreeQueryClosestCallbackFcn = fn (distanceSqrMin: f32, proxyId: c_int, userData: u64, context: ?*anyopaque) callconv(.c) f32;
-pub const TreeBoxCastCallbackFcn = fn (input: [*c]const BoxCastInput, proxyId: c_int, userData: u64, context: ?*anyopaque) callconv(.c) f32;
-pub const TreeRayCastCallbackFcn = fn (input: [*c]const RayCastInput, proxyId: c_int, userData: u64, context: ?*anyopaque) callconv(.c) f32;
+pub const TreeBoxCastCallbackFcn = fn (input: *const BoxCastInput, proxyId: c_int, userData: u64, context: ?*anyopaque) callconv(.c) f32;
+pub const TreeRayCastCallbackFcn = fn (input: *const RayCastInput, proxyId: c_int, userData: u64, context: ?*anyopaque) callconv(.c) f32;
 pub const PlaneResult = extern struct {
     plane: Plane = std.mem.zeroes(Plane),
     point: Vec3 = std.mem.zeroes(Vec3),
@@ -2895,7 +2895,7 @@ pub const BodyPlaneResult = extern struct {
     shapeId: ShapeId = std.mem.zeroes(ShapeId),
     result: PlaneResult = std.mem.zeroes(PlaneResult),
 };
-pub const PlaneResultFcn = fn (shapeId: ShapeId, plane: [*c]const PlaneResult, planeCount: c_int, context: ?*anyopaque) callconv(.c) bool;
+pub const PlaneResultFcn = fn (shapeId: ShapeId, plane: *const PlaneResult, planeCount: c_int, context: ?*anyopaque) callconv(.c) bool;
 pub const MoverFilterFcn = fn (shapeId: ShapeId, context: ?*anyopaque) callconv(.c) bool;
 pub const MassData = extern struct {
     mass: f32 = 0,
@@ -2924,9 +2924,9 @@ pub const BoxHull = extern struct {
     boxPlanes: [6]Plane = std.mem.zeroes([6]Plane),
 };
 pub const MeshDef = extern struct {
-    vertices: [*c]Vec3 = null,
-    indices: [*c]i32 = null,
-    materialIndices: [*c]u8 = null,
+    vertices: ?[*]Vec3 = null,
+    indices: ?[*]i32 = null,
+    materialIndices: ?[*]u8 = null,
     weldTolerance: f32 = 0,
     vertexCount: c_int = 0,
     triangleCount: c_int = 0,
@@ -2985,8 +2985,8 @@ pub const MeshTriangle = extern struct {
 };
 pub const MeshNode = opaque {};
 pub const HeightFieldDef = extern struct {
-    heights: [*c]f32 = null,
-    materialIndices: [*c]u8 = null,
+    heights: ?[*]f32 = null,
+    materialIndices: ?[*]u8 = null,
     scale: Vec3 = std.mem.zeroes(Vec3),
     countX: c_int = 0,
     countZ: c_int = 0,
@@ -2999,15 +2999,15 @@ pub const CompoundCapsuleDef = extern struct {
     material: SurfaceMaterial = std.mem.zeroes(SurfaceMaterial),
 };
 pub const CompoundHullDef = extern struct {
-    hull: [*c]const HullData = null,
+    hull: ?*const HullData = null,
     transform: Transform = std.mem.zeroes(Transform),
     material: SurfaceMaterial = std.mem.zeroes(SurfaceMaterial),
 };
 pub const CompoundMeshDef = extern struct {
-    meshData: [*c]const MeshData = null,
+    meshData: ?*const MeshData = null,
     transform: Transform = std.mem.zeroes(Transform),
     scale: Vec3 = std.mem.zeroes(Vec3),
-    materials: [*c]const SurfaceMaterial = null,
+    materials: *[*]const SurfaceMaterial = null,
     materialCount: c_int = 0,
 };
 pub const CompoundSphereDef = extern struct {
@@ -3015,13 +3015,13 @@ pub const CompoundSphereDef = extern struct {
     material: SurfaceMaterial = std.mem.zeroes(SurfaceMaterial),
 };
 pub const CompoundDef = extern struct {
-    capsules: [*c]CompoundCapsuleDef = null,
+    capsules: ?[*]CompoundCapsuleDef = null,
     capsuleCount: c_int = 0,
-    hulls: [*c]CompoundHullDef = null,
+    hulls: ?[*]CompoundHullDef = null,
     hullCount: c_int = 0,
-    meshes: [*c]CompoundMeshDef = null,
+    meshes: ?[*]CompoundMeshDef = null,
     meshCount: c_int = 0,
-    spheres: [*c]CompoundSphereDef = null,
+    spheres: ?[*]CompoundSphereDef = null,
     sphereCount: c_int = 0,
 };
 pub const CompoundCapsule = extern struct {
@@ -3029,12 +3029,12 @@ pub const CompoundCapsule = extern struct {
     materialIndex: c_int = 0,
 };
 pub const CompoundHull = extern struct {
-    hull: [*c]const HullData = null,
+    hull: ?*const HullData = null,
     transform: Transform = std.mem.zeroes(Transform),
     materialIndex: c_int = 0,
 };
 pub const CompoundMesh = extern struct {
-    meshData: [*c]const MeshData = null,
+    meshData: ?*const MeshData = null,
     transform: Transform = std.mem.zeroes(Transform),
     scale: Vec3 = std.mem.zeroes(Vec3),
     materialIndices: [4]c_int = std.mem.zeroes([4]c_int),
@@ -3043,19 +3043,19 @@ pub const CompoundSphere = extern struct {
     sphere: Sphere = std.mem.zeroes(Sphere),
     materialIndex: c_int = 0,
 };
-const union_unnamed_7 = extern union {
+const ChildShapePayload = extern union {
     capsule: Capsule,
-    hull: [*c]const HullData,
+    hull: *const HullData,
     mesh: Mesh,
     sphere: Sphere,
 };
 pub const ChildShape = extern struct {
-    unnamed_0: union_unnamed_7 = std.mem.zeroes(union_unnamed_7),
+    payload: ChildShapePayload = std.mem.zeroes(ChildShapePayload),
     transform: Transform = std.mem.zeroes(Transform),
     materialIndices: [4]c_int = std.mem.zeroes([4]c_int),
     type: ShapeType = std.mem.zeroes(ShapeType),
 };
-pub const CompoundQueryFcn = fn (compound: [*c]const CompoundData, childIndex: c_int, context: ?*anyopaque) callconv(.c) bool;
+pub const CompoundQueryFcn = fn (compound: *const CompoundData, childIndex: c_int, context: ?*anyopaque) callconv(.c) bool;
 
 pub const SeparatingFeature = enum(c_uint) {
     invalid_axis = 0,
@@ -3101,7 +3101,7 @@ pub const LocalManifoldPoint = extern struct {
 pub const LocalManifold = extern struct {
     normal: Vec3 = std.mem.zeroes(Vec3),
     triangleNormal: Vec3 = std.mem.zeroes(Vec3),
-    points: [*c]LocalManifoldPoint = null,
+    points: ?[*]LocalManifoldPoint = null,
     pointCount: c_int = 0,
     triangleIndex: c_int = 0,
     i1: c_int = 0,
@@ -3278,7 +3278,7 @@ pub const DebugDraw = extern struct {
     DrawCapsuleFcn: ?*const fn (p1: Pos, p2: Pos, radius: f32, color: HexColor, alpha: f32, context: ?*anyopaque) callconv(.c) void = null,
     DrawBoundsFcn: ?*const fn (aabb: AABB, color: HexColor, context: ?*anyopaque) callconv(.c) void = null,
     DrawBoxFcn: ?*const fn (extents: Vec3, transform: WorldTransform, color: HexColor, context: ?*anyopaque) callconv(.c) void = null,
-    DrawStringFcn: ?*const fn (p: Pos, s: [*c]const u8, color: HexColor, context: ?*anyopaque) callconv(.c) void = null,
+    DrawStringFcn: ?*const fn (p: Pos, s: [*:0]const u8, color: HexColor, context: ?*anyopaque) callconv(.c) void = null,
     drawingBounds: AABB = std.mem.zeroes(AABB),
     forceScale: f32 = 0,
     jointScale: f32 = 0,
@@ -3332,7 +3332,7 @@ pub const RecQueryInfo = extern struct {
     hitCount: c_int = 0,
     key: u64 = 0,
     id: u64 = 0,
-    name: [*c]const u8 = null,
+    name: ?[*:0]const u8 = null,
 };
 pub const RecQueryHit = extern struct {
     shape: ShapeId = std.mem.zeroes(ShapeId),
